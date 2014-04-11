@@ -23,7 +23,7 @@ class Mdg_Giftregistry_IndexController extends Mage_Core_Controller_Front_Action
         $this->loadLayout();
         $this->renderLayout();
         // may need to add "return $this;" but somehow i feel this is superfluous.
-
+        //return $this;
     }
 
     public function deleteAction()
@@ -57,33 +57,9 @@ class Mdg_Giftregistry_IndexController extends Mage_Core_Controller_Front_Action
 
     public function editAction()
     {
-//        $this->loadLayout();
-//        $this->renderLayout();
-        try {
-            $data = $this->getRequest()->getParams();
-            $registry = Mage::getModel('mdg_giftregistry/entity');
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-
-            if ($this->getRequest()->getPost() && !empty($data)) {
-                $registry->load($data['registry_id']);
-                if ($registry) {
-                    $registry->updateRegistryData($customer, $data);
-                    $registry->save();
-                    $successMessage = Mage::helper('mdg_giftregistry')->__('Registry Successfully Saved');
-                    Mage::getSingleton('core/session')->addSuccess($successMessage);
-                } else {
-                    throw new Exception('Invalid registry specified');
-                }
-
-            } else {
-                throw new Exception('Insufficient data provided');
-            }
-
-        } catch (Mage_Core_Exception $e) {
-            Mage::getSingleton('core/session')->addError($e->getMessages());
-            $this->_redirect('*/*/');
-        }
-        $this->_redirect('*/*/');
+        $this->loadLayout();
+        $this->renderLayout();
+        //return $this;
     }
 
     public function newPostAction()
@@ -114,8 +90,34 @@ class Mdg_Giftregistry_IndexController extends Mage_Core_Controller_Front_Action
 
     public function editPostAction()
     {
-        $this->loadLayout();
-        $this->renderLayout();
+//        $this->loadLayout();
+//        $this->renderLayout();
+        try {
+            $data = $this->getRequest()->getParams();
+            $registry = Mage::getModel('mdg_giftregistry/entity');
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+
+            if ($this->getRequest()->getPost() && !empty($data)) {
+                $registry->load($data['registry_id']);
+                if ($registry) {
+                    $registry->updateRegistryData($customer, $data);
+                    $registry->save();
+                    $successMessage = Mage::helper('mdg_giftregistry')->__('Registry Successfully Saved');
+                    Mage::getSingleton('core/session')->addSuccess($successMessage);
+                } else {
+                    throw new Exception('Invalid registry specified');
+                }
+
+            } else {
+                throw new Exception('Insufficient data provided');
+            }
+
+        } catch (Mage_Core_Exception $e) {
+            Mage::getSingleton('core/session')->addError($e->getMessages());
+            $this->_redirect('*/*/');
+        }
+        $this->_redirect('*/*/');
+
     }
 }
 

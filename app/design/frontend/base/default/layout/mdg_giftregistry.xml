@@ -19,7 +19,7 @@
     </mdg_giftregistry_index_new>
     <mdg_giftregistry_index_edit>
         <reference name="content">
-                   <block
+            <block name="giftregistry.edit"
                    type="core/template"
                    template="mdg/edit.phtml"
                    as="giftregistry_edit" />
