@@ -18,7 +18,12 @@
         </reference>
     </mdg_giftregistry_index_new>
     <mdg_giftregistry_index_edit>
-
+        <reference name="content">
+                   <block
+                   type="core/template"
+                   template="mdg/edit.phtml"
+                   as="giftregistry_edit" />
+        </reference>
     </mdg_giftregistry_index_edit>
 
     <mdg_giftregistry_view_view>

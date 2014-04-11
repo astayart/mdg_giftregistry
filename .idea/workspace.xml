@@ -23,74 +23,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Abstract.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/code/core/Mage/Core/Model/Abstract.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="0" selection-start="3714" selection-end="3714" vertical-scroll-proportion="14.375" vertical-offset="2070" max-vertical-offset="8640">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Abstract.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/code/core/Mage/Core/Model/Resource/Db/Abstract.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="246" column="0" selection-start="6751" selection-end="6751" vertical-scroll-proportion="0.0" vertical-offset="3690" max-vertical-offset="11730">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Abstract.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/Zend/Db/Adapter/Abstract.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="573" column="0" selection-start="18893" selection-end="18893" vertical-scroll-proportion="0.0" vertical-offset="8595" max-vertical-offset="19260">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Mysql.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/Varien/Db/Adapter/Pdo/Mysql.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="429" column="0" selection-start="11705" selection-end="11705" vertical-scroll-proportion="0.0" vertical-offset="6435" max-vertical-offset="59250">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="MySQL - magento@localhost" pinned="false" current="false" current-in-tab="false">
         <entry file="dbDummy://db-console:/fdec3948/15d14965-cbca-4800-9055-abb9d32fdee4/">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="38" selection-start="52" selection-end="52" vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="120">
+            <state line="2" column="38" selection-start="52" selection-end="52" vertical-scroll-proportion="-1.0344827" vertical-offset="0" max-vertical-offset="120">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file leaf-file-name="config.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/code/local/Mdg/Giftregistry/etc/config.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="14" selection-start="350" selection-end="350" vertical-scroll-proportion="0.17942584" vertical-offset="0" max-vertical-offset="836">
+            <state line="14" column="59" selection-start="476" selection-end="476" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/index.php">
+      <file leaf-file-name="mdg_giftregistry.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/design/frontend/base/default/layout/mdg_giftregistry.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="0" selection-start="978" selection-end="978" vertical-scroll-proportion="-16.25" vertical-offset="0" max-vertical-offset="1395">
-              <folding>
-                <element signature="e#6#976#0" expanded="true" />
-                <marker date="1384195099000" expanded="false" signature="1059:1105" placeholder="..." />
-                <marker date="1384195099000" expanded="true" signature="1106:1529" placeholder="..." />
-                <marker date="1384195099000" expanded="false" signature="1120:1168" placeholder="..." />
-                <marker date="1384195099000" expanded="true" signature="1169:1348" placeholder="..." />
-                <marker date="1384195099000" expanded="false" signature="1182:1281" placeholder="..." />
-                <marker date="1384195099000" expanded="true" signature="1282:1342" placeholder="..." />
-                <marker date="1384195099000" expanded="true" signature="1351:1523" placeholder="..." />
-              </folding>
+            <state line="25" column="20" selection-start="896" selection-end="896" vertical-scroll-proportion="0.43706295" vertical-offset="0" max-vertical-offset="858">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,6 +64,7 @@
         <option value="db-console:/fdec3948/15d14965-cbca-4800-9055-abb9d32fdee4/" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/README" />
+        <option value="$PROJECT_DIR$/app/design/frontend/base/default/layout/mdg_giftregistry.xml" />
       </list>
     </option>
   </component>
@@ -165,6 +121,172 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="design" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="design" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="design" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="default" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="design" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="default" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="code" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="local" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Mdg" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Giftregistry" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="code" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -240,7 +362,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3955669" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25490198" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -346,13 +468,6 @@
         <state line="0" column="170" selection-start="155" selection-end="170" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="843" />
       </provider>
     </entry>
-    <entry file="dbDummy://db-console:/fdec3948/15d14965-cbca-4800-9055-abb9d32fdee4/">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="38" selection-start="52" selection-end="52" vertical-scroll-proportion="0.0" vertical-offset="30" max-vertical-offset="120">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/var/report/1078768773">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="843" />
@@ -366,27 +481,6 @@
     <entry file="file://$PROJECT_DIR$/app/code/local/Mdg/Giftregistry/controllers/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="99" column="0" selection-start="3332" selection-end="3332" vertical-scroll-proportion="0.0" vertical-offset="1333" max-vertical-offset="1935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/code/core/Mage/Core/Model/Resource/Db/Abstract.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="246" column="0" selection-start="6751" selection-end="6751" vertical-scroll-proportion="0.0" vertical-offset="3690" max-vertical-offset="11730">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Zend/Db/Adapter/Abstract.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="573" column="0" selection-start="18893" selection-end="18893" vertical-scroll-proportion="0.0" vertical-offset="8595" max-vertical-offset="19260">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/Varien/Db/Adapter/Pdo/Mysql.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="429" column="0" selection-start="11705" selection-end="11705" vertical-scroll-proportion="0.0" vertical-offset="6435" max-vertical-offset="59250">
           <folding />
         </state>
       </provider>
@@ -447,22 +541,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="0" selection-start="978" selection-end="978" vertical-scroll-proportion="-16.25" vertical-offset="0" max-vertical-offset="1395">
-          <folding>
-            <element signature="e#6#976#0" expanded="true" />
-            <marker date="1384195099000" expanded="false" signature="1059:1105" placeholder="..." />
-            <marker date="1384195099000" expanded="true" signature="1106:1529" placeholder="..." />
-            <marker date="1384195099000" expanded="false" signature="1120:1168" placeholder="..." />
-            <marker date="1384195099000" expanded="true" signature="1169:1348" placeholder="..." />
-            <marker date="1384195099000" expanded="false" signature="1182:1281" placeholder="..." />
-            <marker date="1384195099000" expanded="true" signature="1282:1342" placeholder="..." />
-            <marker date="1384195099000" expanded="true" signature="1351:1523" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="19" selection-start="442" selection-end="442" vertical-scroll-proportion="0.2027027" vertical-offset="0" max-vertical-offset="814">
@@ -472,7 +550,72 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="14" selection-start="350" selection-end="350" vertical-scroll-proportion="0.17942584" vertical-offset="0" max-vertical-offset="836">
+        <state line="13" column="10" selection-start="421" selection-end="421" vertical-scroll-proportion="0.23325358" vertical-offset="0" max-vertical-offset="836">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="0" selection-start="978" selection-end="978" vertical-scroll-proportion="0.48811013" vertical-offset="0" max-vertical-offset="1395">
+          <folding>
+            <element signature="e#6#976#0" expanded="false" />
+            <marker date="1384195099000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="false" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="true" signature="-1:-1" placeholder="..." />
+            <marker date="1384195099000" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Varien/Db/Adapter/Pdo/Mysql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="429" column="0" selection-start="11705" selection-end="11705" vertical-scroll-proportion="0.0" vertical-offset="6435" max-vertical-offset="59250">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/Zend/Db/Adapter/Abstract.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="573" column="0" selection-start="18893" selection-end="18893" vertical-scroll-proportion="-0.34713763" vertical-offset="8595" max-vertical-offset="18975">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/code/core/Mage/Core/Model/Resource/Db/Abstract.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="246" column="0" selection-start="6751" selection-end="6751" vertical-scroll-proportion="-0.42021924" vertical-offset="3690" max-vertical-offset="11385">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/etc/modules/Mdg_Giftregistry.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="858">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://db-console:/fdec3948/15d14965-cbca-4800-9055-abb9d32fdee4/">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="38" selection-start="52" selection-end="52" vertical-scroll-proportion="-1.0344827" vertical-offset="0" max-vertical-offset="120">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/code/local/Mdg/Giftregistry/etc/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="59" selection-start="476" selection-end="476" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/design/frontend/base/default/layout/mdg_giftregistry.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="20" selection-start="896" selection-end="896" vertical-scroll-proportion="0.43706295" vertical-offset="0" max-vertical-offset="858">
           <folding />
         </state>
       </provider>
