@@ -1,0 +1,39 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: astayart
+ * Date: 4/11/14
+ * Time: 3:05 PM
+ */
+$helper = Mage::helper('mdg_giftregistry');
+//$sess = Mage::getSingleton('customer/session');
+//$reg = $sess->getLoadedRegistry();
+$reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->getParam('registry_id'));
+?>
+<?php if($reg): ?>
+    <form action="<?php echo $this->getUrl('mdg_giftregistry/index/editPost/') ?>" method="post" id="form-validate">
+        <fieldset>
+            <?php echo $this->getBlockHtml('formkey') ?>
+            <input type="hidden" id="type_id" value="<?php echo $reg->getTypeId() ?>" />
+            <ul class="form-list">
+                <li class="field">
+                    <label class="giftreg" for="event_name"><?php echo $this->__('Event Name') ?></label>
+                    <input type="text"
+                           name="event_name" id="event_name"
+                           value="<?php echo $reg->getEventName() ?>"
+                           title="<?php echo $this->__('Event Name') ?>" />
+                </li>
+                <li class="field">
+                    <label class="giftreg" for="event_location"><?php echo $this->__('Event Location') ?></label>
+                    <input type="text"
+                           name="event_location" id="event_location"
+                           value="<?php echo $reg->getEventLocation() ?>"
+                           title="<?php echo $this->__('Event Location') ?>" />
+                </li>
+
+            </ul>
+        </fieldset>
+    </form>
+<?php else: ?>
+    <h2>there has been an issue!</h2>
+<?php endif; ?>
