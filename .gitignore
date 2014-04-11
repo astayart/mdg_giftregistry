@@ -7,6 +7,7 @@ app/design/frontend/base/default/layout/*
 app/design/frontend/base/default/template/*
 !app/design/frontend/base/default/template/mdg
 app/design/frontend/enterprise
+app/design/install
 app/etc/*.xml*
 app/etc/modules/*.xml
 !app/etc/modules/Mdg_Giftregistry.xml
