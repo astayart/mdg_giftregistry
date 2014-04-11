@@ -25,7 +25,7 @@
             <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/.gitignore">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state line="36" column="9" selection-start="587" selection-end="587" vertical-scroll-proportion="0.6293706" vertical-offset="0" max-vertical-offset="858">
+                  <state line="17" column="3" selection-start="435" selection-end="435" vertical-scroll-proportion="0.2972028" vertical-offset="0" max-vertical-offset="858">
                     <folding />
                   </state>
                 </provider>
@@ -183,6 +183,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="magento" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -441,7 +455,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="9" selection-start="587" selection-end="587" vertical-scroll-proportion="0.6293706" vertical-offset="0" max-vertical-offset="858">
+        <state line="17" column="3" selection-start="435" selection-end="435" vertical-scroll-proportion="0.2972028" vertical-offset="0" max-vertical-offset="858">
           <folding />
         </state>
       </provider>

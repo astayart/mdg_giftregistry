@@ -9,6 +9,9 @@ app/design/frontend/base/default/template/*
 app/design/frontend/enterprise
 app/etc/modules/*
 !app/etc/modules/Mdg_Giftregistry.xml
+app/locale
+app/.htaccess
+app/Mage.php
 downloader
 errors
 js
