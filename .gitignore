@@ -16,6 +16,7 @@ app/.htaccess
 app/Mage.php
 downloader
 errors
+includes
 js
 lib
 media
@@ -24,6 +25,7 @@ shell
 skin
 var
 .htaccess*
+.idea
 api.php
 cron.php
 cron.sh
