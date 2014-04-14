@@ -30,10 +30,30 @@ $reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->
                            value="<?php echo $reg->getEventLocation() ?>"
                            title="<?php echo $this->__('Event Location') ?>" />
                 </li>
-
+                <li class="field">
+                    <label class="giftreg" for="event_country">
+                        <?php echo $this->__('Event Country') ?>
+                    </label>
+                    <input type="text"
+                           name="event_country"
+                           value="<?php echo $reg->getEventCountry() ?>"
+                           title="<?php echo $this->__('Event Country') ?>" />
+                </li>
             </ul>
+            <div class="buttons-set">
+                <button type="submit" title="Save" class="button">
+                    <span>
+                        <span><?php echo $this->__('Save') ?></span>
+                    </span>
+                </button>
+            </div>
         </fieldset>
     </form>
+    <script type="text/javascript">
+        //<![CDATA[
+        var dataForm = new VarienForm('form-validate', true);
+        //]]>
+    </script>
 <?php else: ?>
-    <h2>there has been an issue!</h2>
+    <h2>There has been an issue loading the registry!</h2>
 <?php endif; ?>
