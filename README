@@ -9,4 +9,9 @@ Enterprise version 1.13.1.0
 
 Some differences from Mr. MacGregor's code are meant to avoid
 collision with the Enterprise GiftRegistry module, in particular
-the frontend route.
+the frontend route. Othere relate to issues found with the module.
+for instance, in ...template/mdg/edit.phtml, the author relies on 
+the current loaded registry being in the session, however, if the
+registry has not yet been viewed by the current user, it will not
+be available.
+
