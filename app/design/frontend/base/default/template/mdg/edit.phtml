@@ -15,6 +15,7 @@ $reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->
         <fieldset>
             <?php echo $this->getBlockHtml('formkey') ?>
             <input type="hidden" id="type_id" value="<?php echo $reg->getTypeId() ?>" />
+            <input type="hidden" id="registry_id" value="<?php echo $reg->getId() ?>" />
             <ul class="form-list">
                 <li class="field">
                     <label class="giftreg" for="event_name"><?php echo $this->__('Event Name') ?></label>
