@@ -97,7 +97,7 @@ if($installer->getConnection()->isTableExists($tableName) != true) {
                 'primary' => true,
             ),
             'Entity Id')
-        ->addColumn('customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER,null,
+        ->addColumn('customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null,
             array(
                 'unsigned' => true,
                 'nullable' => false,
@@ -144,7 +144,7 @@ if($installer->getConnection()->isTableExists($tableName) != true) {
         ->addColumn(
             'event_country',
             Varien_Db_Ddl_Table::TYPE_TEXT,
-            3,
+            255,
             array(),
             'Event Country'
         )

@@ -21,6 +21,14 @@ class Mdg_Giftregistry_IndexController extends Mage_Core_Controller_Front_Action
     {
         //echo 'this is our test controller';
         $this->loadLayout();
+        $collection = null;
+        $currentCustomer = Mage::getSingleton('customer/session')->getCustomer();
+        if($currentCustomer) {
+            $collection = Mage::getModel('mdg_giftregistry/entity')
+                ->getCollection()
+                ->addFieldToFilter('customer_id', $currentCustomer->getId());
+        }
+        $this->getLayout()->getBlock('giftregistry.list')->setResults($collection);
         $this->renderLayout();
         // may need to add "return $this;" but somehow i feel this is superfluous.
         //return $this;
@@ -92,6 +100,7 @@ class Mdg_Giftregistry_IndexController extends Mage_Core_Controller_Front_Action
     {
 //        $this->loadLayout();
 //        $this->renderLayout();
+        /** @var $registry Mdg_Giftregistry_Model_Entity */
         try {
             $data = $this->getRequest()->getParams();
             $registry = Mage::getModel('mdg_giftregistry/entity');

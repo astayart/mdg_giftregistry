@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
+    <catalog_product_view translate="label">
+        <reference name="content">
+            <reference name="product.info">
+                <block type="mdg_giftregistry/add" name="registry.add" as="registry_add" template="mdg/add_to_registry.phtml" />
+            </reference>
+        </reference>
+    </catalog_product_view>
     <mdg_giftregistry_index_index>
         <reference name="content">
             <block name="giftregistry.list"
@@ -27,13 +34,28 @@
     </mdg_giftregistry_index_edit>
 
     <mdg_giftregistry_view_view>
+        <reference name="content">
+            <block name="giftregistry.view"
+                   type="core/template"
+                   template="mdg/view.phtml"
+                   as="giftregistry_view" />
+        </reference>
 
     </mdg_giftregistry_view_view>
 
     <mdg_giftregistry_search_index>
-
+        <reference name="content">
+            <block name="giftregistry.search"
+                   type="core/template"
+                   template="mdg/search.phtml"
+                   as="giftregistry_search" />
+        </reference>
     </mdg_giftregistry_search_index>
     <mdg_giftregistry_search_results>
-
+        <reference name="content">
+            <block name="giftregistry.results"
+                   type="mdg_giftregistry/list"
+                   template="mdg/list.phtml" />
+        </reference>
     </mdg_giftregistry_search_results>
 </layout>

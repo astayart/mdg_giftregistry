@@ -13,7 +13,7 @@ class Mdg_Giftregistry_SearchController extends Mage_Core_Controller_Front_Actio
     }
     public function resultsAction() {
         $this->loadLayout();
-        if($sp = $this->getRequest()->getParam('search_params')) {
+        if($sp = $this->getRequest()->getParams()) {
             $results = Mage::getModel('mdg_giftregistry/entity')->getCollection();
             if($sp['type']){
                 $results->addFieldToFilter('type_id', $sp['type']);
@@ -24,7 +24,9 @@ class Mdg_Giftregistry_SearchController extends Mage_Core_Controller_Front_Actio
             if($sp['location']){
                 $results->addFieldToFilter('event_location', $sp['location']);
             }
-            $this->getLayout()->getBlock('mdg_giftregistry.search.results')->setResults($results);
+            $layout = $this->getLayout();
+            $block = $layout->getBlock('giftregistry.results');
+            $block->setResults($results);
 
         }
 

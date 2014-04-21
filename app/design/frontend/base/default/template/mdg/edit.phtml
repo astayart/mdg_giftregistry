@@ -9,6 +9,8 @@ $helper = Mage::helper('mdg_giftregistry');
 //$sess = Mage::getSingleton('customer/session');
 //$reg = $sess->getLoadedRegistry();
 $reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->getParam('registry_id'));
+$helper = Mage::helper('mdg_giftregistry');
+
 ?>
 <?php if($reg): ?>
     <form action="<?php echo $this->getUrl('mdg_giftregistry/index/editPost/') ?>" method="post" id="form-validate">
@@ -17,6 +19,17 @@ $reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->
             <input type="hidden" id="type_id" value="<?php echo $reg->getTypeId() ?>" />
             <input type="hidden" id="registry_id" name="registry_id" value="<?php echo $reg->getId() ?>" />
             <ul class="form-list">
+                <li>
+                    <label for="type"><?php echo $this->__('Event type') ?></label>
+                    <select name="type_id" id="type_id">
+                        <?php foreach($helper->getEventTypes() as $type): ?>
+                            <option id="<?php echo $type->getTypeId() ?>"
+                                    value="<?php echo $type->getTypeId() ?>"<?php echo $type->getTypeId() == $reg->getTypeId() ? ' selected' : '' ?>>
+                                <?php echo $type->getName() ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </li>
                 <li class="field">
                     <label class="giftreg" for="event_name"><?php echo $this->__('Event Name') ?></label>
                     <input type="text"
