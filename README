@@ -25,3 +25,9 @@ and 'theme' and use a symlink to the Enterprise default theme to
 maintain Enterprise default behavior where needed. I may also 
 decide to remove the depreciated Mysql4 model in favor of the 
 new Resource model.
+
+The custom package and theme approach seems to produce the
+desired result, although it does mean that my layout files would
+need to be created in any other themes under my package or get
+into a web of symlinks. Perhaps the Skin and or Layout options
+provide a solution. That's a question for another day.
