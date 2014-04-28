@@ -23,8 +23,8 @@ media
 pkginfo
 shell
 skin/adminhtml
-skin/frontend/*
-!skin/frontend/mdggiftreg
+skin/frontend/base
+skin/frontend/enterprise
 skin/install
 var
 .htaccess*
