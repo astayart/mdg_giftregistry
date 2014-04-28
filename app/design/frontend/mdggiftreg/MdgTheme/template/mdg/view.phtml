@@ -1,0 +1,12 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: astayart
+ * Date: 4/20/14
+ * Time: 9:16 AM
+ */
+$reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->getParam('registry_id'));
+$type = Mage::getSingleton('mdg_giftregistry/type')->load($reg->getTypeId());
+?>
+<h2><?php echo $reg->getEventName() ?></h2>
+<p><?php echo $type->getName() ?></p>

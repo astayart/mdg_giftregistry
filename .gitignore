@@ -22,7 +22,9 @@ lib
 media
 pkginfo
 shell
-skin
+skin/adminhtml
+skin/frontend/*
+!skin/frontend/mdggiftreg
 var
 .htaccess*
 .idea

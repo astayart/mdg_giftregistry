@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: astayart
+ * Date: 4/8/14
+ * Time: 3:47 PM
+ * @var $helper Mdg_Giftregistry_Helper_Data
+ */
+$collection = $this->getResults();
+$helper = Mage::helper('mdg_giftregistry');
+?>
+<div class="customer-list">
+    <?php if (!$collection->count()): ?>
+        <h2><?php echo $this->__('No registries created') ?></h2>
+    <?php else: ?>
+        <ul>
+            <?php foreach ($collection as $registry): ?>
+                <li>
+                    <h3><?php echo $registry->getEventName(); ?></h3>
+
+                    <p><strong><?php echo $this->__('Event Date:') ?> <?php echo $registry->getEventDate() ?></strong>
+                    </p>
+
+                    <p>
+                        <strong><?php echo $this->__('Event Location:') ?> <?php echo $registry->getEventLocation() ?></strong>
+                    </p>
+                    <a href="<?php echo $this->getUrl('mdg_giftregistry/view/view', array('_query' => array('registry_id' => $registry->getEntityId()))) ?>">
+                        <?php echo $this->__('View Registry') ?>
+                    </a>
+                    <?php if ($helper->isRegistryOwner($registry->getCustomerId())) : ?>
+                        <a href="<?php echo $this->getUrl('mdg_giftregistry/index/edit', array('_query' => array('registry_id' => $registry->getEntityId()))) ?>">
+                            <?php echo $this->__('Edit Registry') ?>
+                        </a>
+                        <a href="<?php echo $this->getUrl('mdg_giftregistry/index/delete', array('_query' => array('registry_id' => $registry->getEntityId()))) ?>">
+                            <?php echo $this->__('Delete Registry') ?>
+                        </a>
+                    <?php endif; ?>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <a href="<?php echo $this->getUrl('mdg_giftregistry/index/new') ?>">
+        <?php echo $this->__('Click here to create a new Gift Registry') ?>
+    </a>
+</div>
