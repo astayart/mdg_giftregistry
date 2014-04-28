@@ -25,6 +25,7 @@ shell
 skin/adminhtml
 skin/frontend/*
 !skin/frontend/mdggiftreg
+skin/install
 var
 .htaccess*
 .idea
