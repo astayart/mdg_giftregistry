@@ -15,4 +15,13 @@ the current loaded registry being in the session, however, if the
 registry has not yet been viewed by the current user, it will not
 be available.
 
-does this cause a commit?
+OK, so at this point i have reached the end of chapter 4 where
+we are kicked over to 
+http://magedevguide.com/chapter4/adding-products-registry. In this 
+section, MacGregor directs us to edit a base/default template, 
+which i was under the impression was a bad idea. So I am going to 
+deviate from this path to create a custom 'package' and 'theme' 
+and use a symlink to the Enterprise default theme to maintain
+Enterprise default behavior where needed. I may also decide to 
+removal the depreciated Mysql4 model in favor of the new Resource
+model.
