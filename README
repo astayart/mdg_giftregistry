@@ -1,4 +1,4 @@
-this is a repository of the code for my progress with
+This is a repository of the code for my progress with
 the book Magento PHP Developers Guide by Allan MacGregor.
 Other resources can be found on the authors github:
 
@@ -15,13 +15,13 @@ the current loaded registry being in the session, however, if the
 registry has not yet been viewed by the current user, it will not
 be available.
 
-OK, so at this point i have reached the end of chapter 4 where
+OK, so at this point I have reached the end of chapter 4 where
 we are kicked over to 
-http://magedevguide.com/chapter4/adding-products-registry. In this 
-section, MacGregor directs us to edit a base/default template, 
-which i was under the impression was a bad idea. So I am going to 
-deviate from this path to create a custom 'package' and 'theme' 
-and use a symlink to the Enterprise default theme to maintain
-Enterprise default behavior where needed. I may also decide to 
-removal the depreciated Mysql4 model in favor of the new Resource
-model.
+http://magedevguide.com/chapter4/adding-products-registry. 
+In this section, MacGregor directs us to edit a base/default 
+template, which I was under the impression was a bad idea. So 
+I am going to deviate from this path to create a custom 'package'
+and 'theme' and use a symlink to the Enterprise default theme to 
+maintain Enterprise default behavior where needed. I may also 
+decide to remove the depreciated Mysql4 model in favor of the 
+new Resource model.
