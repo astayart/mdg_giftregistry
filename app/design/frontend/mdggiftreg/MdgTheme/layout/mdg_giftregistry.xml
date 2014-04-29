@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <catalog_product_view>
         <reference name="product.info">
-            <block type="mdg_giftregistry/add" name="product.info.addto" as="addtoreg" template="mdg/addtoreg.phtml" />
+            <block type="mdg_giftregistry/add" name="mdg_giftregistry.addto" as="addtoreg" template="mdg/addtoreg.phtml" />
             <!--<block type="core/template" name="registry.add" as="addtoreg" before="-" template="mdg/addtoreg.phtml"/>-->
         </reference>
     </catalog_product_view>

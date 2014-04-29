@@ -4,6 +4,7 @@
  * User: magentouser
  * Date: 4/28/14
  * Time: 2:46 PM
+ * @var $this Mdg_Giftregistry_Block_Add
  */
 $registries = $this->getCustomerRegistryCollection();
 
@@ -26,8 +27,9 @@ $registries = $this->getCustomerRegistryCollection();
     <?php endif; ?>
     <?php if ($registries->count() > 0) : ?>
         <?php foreach ($registries as $reg) : ?>
-            <li><span class="separator">|</span> <a href="foo"
-                                                    class="link-wishlist"><?php echo $this->__('Add to ') . $reg->getEventName() ?></a>
+            <li><span class="separator">|</span>
+                <a href="<?php echo $this->getUrl('mdg_giftregistry/item/add/') . '?product_id=' . $_product->getId() . '&registry_id=' . $reg->getId() ?>"
+                   class="link-wishlist"><?php echo $this->__('Add to ') . $reg->getEventName() ?></a>
             </li>
         <?php endforeach; ?>
     <?php endif; ?>

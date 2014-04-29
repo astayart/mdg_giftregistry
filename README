@@ -9,7 +9,7 @@ Enterprise version 1.13.1.0
 
 Some differences from Mr. MacGregor's code are meant to avoid
 collision with the Enterprise GiftRegistry module, in particular
-the frontend route. Othere relate to issues found with the module.
+the frontend route. Other relate to issues found with the module.
 for instance, in ...template/mdg/edit.phtml, the author relies on 
 the current loaded registry being in the session, however, if the
 registry has not yet been viewed by the current user, it will not
@@ -26,8 +26,35 @@ maintain Enterprise default behavior where needed. I may also
 decide to remove the depreciated Mysql4 model in favor of the 
 new Resource model.
 
+2014-04-28
 The custom package and theme approach seems to produce the
 desired result, although it does mean that my layout files would
 need to be created in any other themes under my package or get
 into a web of symlinks. Perhaps the Skin and or Layout options
 provide a solution. That's a question for another day.
+
+2014-04-29
+Well up to this point, I have refrained from overt criticism
+of the source text, but after completing the section on adding
+items to a gift registry, I see I have no choice. The very next
+section simply states "Coming really soon", which I find
+doubtful. This book has been published for over a year, and
+there are still sections that are "coming soon"? Seriously?
+Well, whatever. I have already started marching to the beat
+of my own drum, so now I will fill  in the blanks as I see fit.
+Perhaps this is simply a cryptic challenge from the author.
+
+To proceed, we need to have a logical basis for the gift registry.
+We have already seen a few parts of this to fruition, such as the
+basics of registry management. The owner of the registry can
+create, edit and delete registries (albeit there are several
+loose ends lying around). The owner can also add items to a
+registry, however at this point, the owner cannot remove items,
+edit items, delete items, or share the registry with others.
+And of course there is still no mechanism for others to shop
+from the registry.
+
+So without going into the details of the logical basis for my
+gift registry, Lets move forward with adding the ability to
+manage the gift registry. For this I will co-opt the "view
+registry" function.
