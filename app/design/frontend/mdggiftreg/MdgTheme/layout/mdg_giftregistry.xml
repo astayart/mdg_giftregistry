@@ -35,7 +35,7 @@
     <mdg_giftregistry_view_view>
         <reference name="content">
             <block name="giftregistry.view"
-                   type="core/template"
+                   type="mdg_giftregistry/view"
                    template="mdg/view.phtml"
                    as="giftregistry_view"/>
         </reference>

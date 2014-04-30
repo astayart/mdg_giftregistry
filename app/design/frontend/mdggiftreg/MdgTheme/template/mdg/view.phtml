@@ -4,11 +4,51 @@
  * User: astayart
  * Date: 4/20/14
  * Time: 9:16 AM
+ *
+ * Ok, so the idea here is that we list out the items that
+ * the registry owner has added to this registry, and provide
+ * an opportunity to remove the items. so we will just go with
+ * a thumbnail, the product name, it's current base price, and
+ * a delete link
+ *
+ * @var $reg Mdg_Giftregistry_Model_Entity
+ * @var $item Mage_Catalog_Model_Product
+ * @var $this Mdg_Giftregistry_Block_View
  */
-$reg = Mage::getSingleton('mdg_giftregistry/entity')->load($this->getRequest()->getParam('registry_id'));
+$reg = Mage::registry('loaded_registry');
 $type = Mage::getSingleton('mdg_giftregistry/type')->load($reg->getTypeId());
 
-$items = $reg->getCollection();
+$items = $reg->getItems();
 ?>
 <h2><?php echo $reg->getEventName() ?></h2>
 <p><?php echo $type->getName() ?></p>
+<table>
+    <caption>Current Items</caption>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Name</th>
+            <th>Base Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($items as $item) : ?>
+        <tr>
+            <td><img src="<?php echo Mage::helper('catalog/image')->init($item, 'thumbnail')->resize(75) ?>" alt="" /></td>
+            <td><?php echo $item->getName() ?></td>
+            <td><?php echo $item->getPrice() ?></td>
+            <td><a href="<?php echo $this->getUrl('mdg_giftregistry/item/delete/') . '?product_id=' . $item->getId() . '&registry_id=' . $reg->getId() ?>">Delete</a></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+<ul>
+    <?php foreach($items as $item) : ?>
+    <li>
+
+    </li>
+    <?php endforeach; ?>
+</ul>

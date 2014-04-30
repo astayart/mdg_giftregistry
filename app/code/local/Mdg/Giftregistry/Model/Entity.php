@@ -28,4 +28,18 @@ class Mdg_Giftregistry_Model_Entity extends Mage_Core_Model_Abstract {
         }
         return $this;
     }
+    public function getItems() {
+        $ids = Mage::getModel('mdg_giftregistry/item')
+            ->getCollection()
+            ->addFieldToFilter('registry_id',$this->getId())
+            ->getColumnValues('product_id');
+
+        $collection = Mage::getModel('catalog/product')
+            ->getCollection()
+            ->addAttributeToSelect('*')
+            ->addPriceData()
+            ->addFieldToFilter('entity_id', $ids);
+        Mage::register('mdg_reg_items', $collection);
+        return $collection;
+    }
 }

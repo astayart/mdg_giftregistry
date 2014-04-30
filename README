@@ -58,3 +58,9 @@ So without going into the details of the logical basis for my
 gift registry, Lets move forward with adding the ability to
 manage the gift registry. For this I will co-opt the "view
 registry" function.
+
+2014-04-30
+Ok, well it's not pretty, but in a case like this, it's all
+about forward motion. Today we succeeded in creating a registry
+item management tool. the registry owner can now see all the
+items in the registry, and delete them if desired.
