@@ -75,4 +75,24 @@
             </mdg_giftregistry_read>
         </resources>
     </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <mdg_giftregistry before="Mage_Adminhtml">Mdg_Giftregistry_Adminhtml</mdg_giftregistry>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <mdg_giftregsitry module="mdg_giftregistry">
+                    <file>mdg_giftregistry.xml</file>
+                </mdg_giftregsitry>
+            </updates>
+        </layout>
+    </adminhtml>
 </config>
