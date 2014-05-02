@@ -75,17 +75,17 @@
             </mdg_giftregistry_read>
         </resources>
     </global>
-    <!--<admin>
+    <admin>
         <routers>
             <adminhtml>
                 <args>
                     <modules>
-                        <mdg_giftregistry before="Mage_Adminhtml">Mdg_Giftregistry_Adminhtml</mdg_giftregistry>
+                        <mdg_giftregistry before="Enterprise_GiftRegistry_Adminhtml">Mdg_Giftregistry_Adminhtml</mdg_giftregistry>
                     </modules>
                 </args>
             </adminhtml>
         </routers>
-    </admin>-->
+    </admin>
     <adminhtml>
         <layout>
             <updates>
