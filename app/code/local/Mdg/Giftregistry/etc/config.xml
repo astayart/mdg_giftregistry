@@ -75,7 +75,7 @@
             </mdg_giftregistry_read>
         </resources>
     </global>
-    <admin>
+    <!--<admin>
         <routers>
             <adminhtml>
                 <args>
@@ -85,7 +85,7 @@
                 </args>
             </adminhtml>
         </routers>
-    </admin>
+    </admin>-->
     <adminhtml>
         <layout>
             <updates>
