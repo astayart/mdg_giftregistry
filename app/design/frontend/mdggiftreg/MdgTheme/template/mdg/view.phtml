@@ -33,6 +33,7 @@ $items = $reg->getItems();
         </tr>
     </thead>
     <tbody>
+    <?php if(!is_null($items)) : ?>
     <?php foreach($items as $item) : ?>
         <tr>
             <td><img src="<?php echo Mage::helper('catalog/image')->init($item, 'thumbnail')->resize(75) ?>" alt="" /></td>
@@ -41,6 +42,12 @@ $items = $reg->getItems();
             <td><a href="<?php echo $this->getUrl('mdg_giftregistry/item/delete/') . '?product_id=' . $item->getId() . '&registry_id=' . $reg->getId() ?>">Delete</a></td>
         </tr>
     <?php endforeach; ?>
+
+    <?php else : ?>
+        <tr>
+            <td colspan="4">No items in this registry.</td>
+        </tr>
+    <?php endif; ?>
     </tbody>
 </table>
 
