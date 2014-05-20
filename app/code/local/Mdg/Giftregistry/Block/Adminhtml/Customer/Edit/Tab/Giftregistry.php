@@ -26,7 +26,7 @@ class Mdg_Giftregistry_Block_Adminhtml_Customer_Edit_Tab_Giftregistry
      */
     public function getTabLabel()
     {
-        return $this->__('Gift Registry List aardvark');
+        return $this->__('MdgGiftregistry List');
     }
 
     /**
