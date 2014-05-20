@@ -34,6 +34,9 @@ class Mdg_Giftregistry_Model_Entity extends Mage_Core_Model_Abstract {
             ->addFieldToFilter('registry_id',$this->getId())
             ->getColumnValues('product_id');
 
+        if( count($ids) == 0 ) {
+            return null;
+        }
         $collection = Mage::getModel('catalog/product')
             ->getCollection()
             ->addAttributeToSelect('*')
