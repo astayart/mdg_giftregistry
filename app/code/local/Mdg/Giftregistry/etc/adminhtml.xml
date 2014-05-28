@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <mdg_giftregistry module="mdg_giftregistry">
+            <title>Mdg Gift Registry</title>
+            <sort_order>41</sort_order>
+            <children>
+                <items module="mdg_giftregistry">
+                    <title>Manage registries</title>
+                    <sort_order>0</sort_order>
+                    <action>adminhtml/mgdgiftregistry/index</action>
+                </items>
+            </children>
+        </mdg_giftregistry>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <giftregistry translate="title" module="mdg_giftregistry">
+                        <title>Mdg Gift Registry</title>
+                        <sort_order>300</sort_order>
+                        <children>
+                            <items translate="title" module="mdg_giftregistry">
+                                <title>Manage Mdg Gift Registries</title>
+                                <sort_order>0</sort_order>
+                            </items>
+                        </children>
+                    </giftregistry>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
