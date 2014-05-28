@@ -8,7 +8,7 @@
                 <items module="mdg_giftregistry">
                     <title>Manage registries</title>
                     <sort_order>0</sort_order>
-                    <action>adminhtml/mgdgiftregistry/index</action>
+                    <action>adminhtml/mdggiftregistry/index</action>
                 </items>
             </children>
         </mdg_giftregistry>

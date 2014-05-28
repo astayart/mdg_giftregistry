@@ -1,10 +1,16 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
-    <adminhtml_mgdgiftregistry_index>
+    <adminhtml_mdggiftregistry_index>
         <reference name="content">
             <block type="mdg_giftregistry/adminhtml_registries" name="registries"/>
         </reference>
-    </adminhtml_mgdgiftregistry_index>
+    </adminhtml_mdggiftregistry_index>
+    <adminhtml_mdggiftregistry_edit>
+        <reference name="content">
+            <block type="mdg_giftregistry/adminhtml_registries_edit" name="new_registry_tabs" />
+        </reference>
+    </adminhtml_mdggiftregistry_edit>
+
     <adminhtml_customer_edit>
         <reference name="customer_edit_tabs">
             <block type="mdg_giftregistry/adminhtml_customer_edit_tab_giftregistry"

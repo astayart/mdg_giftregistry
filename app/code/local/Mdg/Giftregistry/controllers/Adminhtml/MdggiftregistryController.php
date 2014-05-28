@@ -5,7 +5,7 @@
  * Date: 5/1/14
  * Time: 3:55 PM
  */
-class Mdg_Giftregistry_Adminhtml_MgdGiftregistryController extends Mage_Adminhtml_Controller_Action {
+class Mdg_Giftregistry_Adminhtml_MdgGiftregistryController extends Mage_Adminhtml_Controller_Action {
     public function indexAction() {
         $this->loadLayout();
         $this->renderLayout();
