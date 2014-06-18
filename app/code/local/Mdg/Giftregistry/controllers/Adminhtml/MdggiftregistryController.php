@@ -12,7 +12,26 @@ class Mdg_Giftregistry_Adminhtml_MdgGiftregistryController extends Mage_Adminhtm
         return $this;
     }
 	public function editAction() {
+		$id = $this->getRequest()->getParam('id', null);
+		$registry = Mage::getModel('mdg_giftregistry/entity');
+
+		if($id){
+			$registry->load($id);
+			if($registry->getId()){
+				$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+				if($data){
+					$registry->setData($data)->setId($id);
+				}
+			} else {
+				Mage::getSingleton('adminhtml/session')->addError('The gift registry does not exist');
+				$this->_redirect('*/*/');
+			}
+
+		}
+		Mage::register('registry_data', $registry);
+
 		$this->loadLayout();
+		$this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
 		$this->renderLayout();
 		return $this;
 	}

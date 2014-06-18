@@ -11,8 +11,8 @@ extends Mage_Adminhtml_Block_Widget_Form_Container {
 	public function __construct() {
 		parent::__construct();
 		$this->_objectId = 'id';
-		$this->_blockGroup = 'registries';
-		$this->_controller  = 'adminhtml_mdggiftregistry';
+		$this->_blockGroup = 'mdg_giftregistry';
+		$this->_controller  = 'adminhtml_registries';
 		$this->_mode = 'edit';
 		$this->helper = Mage::helper('mdg_giftregistry');
 
@@ -20,7 +20,7 @@ extends Mage_Adminhtml_Block_Widget_Form_Container {
 		$this->_updateButton('delete', 'label', $this->helper->__('Delete Registry'));
 	}
 	public function getHeaderText(){
-		$rd = Mage::registry('registries_data');
+		$rd = Mage::registry('registry_data');
 
 		if($rd && $rd->getId()){
 			return $this->helper->__("Edit Registry '%s'", $this->escapeHtml($rd->getTitle()));
