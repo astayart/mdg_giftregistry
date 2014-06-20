@@ -15,15 +15,18 @@ class Mdg_Giftregistry_Adminhtml_MdgGiftregistryController extends Mage_Adminhtm
 		$id = $this->getRequest()->getParam('id', null);
 		$registry = Mage::getModel('mdg_giftregistry/entity');
 
+		/** var Mage_Adminhtml_Model_Session $session */
+		$session = Mage::getSingleton('adminhtml/session');
+
 		if($id){
 			$registry->load($id);
 			if($registry->getId()){
-				$data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+				$data = $session->getFormData(true);
 				if($data){
 					$registry->setData($data)->setId($id);
 				}
 			} else {
-				Mage::getSingleton('adminhtml/session')->addError('The gift registry does not exist');
+				$session->addError('The gift registry does not exist');
 				$this->_redirect('*/*/');
 			}
 
@@ -36,9 +39,30 @@ class Mdg_Giftregistry_Adminhtml_MdgGiftregistryController extends Mage_Adminhtm
 		return $this;
 	}
 	public function saveAction() {
-		$this->loadLayout();
-		$this->renderLayout();
-		return $this;
+		$data = $this->getRequest()->getPost();
+		$id = $this->getRequest()->getParam('id');
+		try {
+			/** @var Mdg_Giftregistry_Model_Entity $registry */
+			$registry = Mage::getModel('mdg_giftregistry/entity')->load($id);
+			/* Just calling setData will not work because $data does not
+				contain things like the customer_id. since this $data will
+				replace the existing data, you will end up trying to save
+				a registry without a customer_id, which is a violation of
+				a foreign key constraint. */
+			//$registry->setData($data);
+			$registry->setEventName($data['event_name']);
+			$registry->setTypeId($data['type_id']);
+			$registry->setEventLocation($data['event_location']);
+			$registry->setEventDate($data['event_date']);
+			$registry->setEventCountry($data['event_country']);
+
+			$registry->save();
+			$this->_redirect('*/*/edit', array('id' => $id));
+		} catch (Exception $e) {
+			$this->_getSession()->addError('error! ' . $e->getMessage());
+			Mage::logException($e);
+			$this->_redirect('*/*/edit', array('id' => $id));
+		}
 	}
 	public function newAction() {
 		$this->loadLayout();

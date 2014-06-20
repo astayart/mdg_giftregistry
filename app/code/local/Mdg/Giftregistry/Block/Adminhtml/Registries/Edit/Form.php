@@ -24,23 +24,23 @@ class Mdg_Giftregistry_Block_Adminhtml_Registries_Edit_Form extends Mage_Adminht
 		if($data) {
 			$session->setFormData(null);
 		} elseif (Mage::registry('registry_data')) {
-			$data = Mage::registry('registry_data')->getFormData();
+			$data = Mage::registry('registry_data')->getData();
 		}
 
 		$fieldset = $form->addFieldset('registry_form', array(
 			'legend' => Mage::helper('mdg_giftregistry')->__('Gift Registry Information')
 		));
+		$fieldset->addField('event_name', 'text', array(
+			'label' => 'Event Name',
+			'class' => 'required-entry',
+			'required' => true,
+			'name' => 'event_name'
+		));
 		$fieldset->addField('type_id', 'text', array(
-			'label' => 'Registry Id',
+			'label' => 'Event Type Id',
 			'class' => 'required-entry',
 			'required' => true,
 			'name' => 'type_id'
-		));
-		$fieldset->addField('website_id', 'text', array(
-			'label' => 'Website Id',
-			'class' => 'required-entry',
-			'required' => true,
-			'name' => 'website_id'
 		));
 		$fieldset->addField('event_location', 'text', array(
 			'label' => 'Event Location',
@@ -48,11 +48,14 @@ class Mdg_Giftregistry_Block_Adminhtml_Registries_Edit_Form extends Mage_Adminht
 			'required' => true,
 			'name' => 'event_location'
 		));
-		$fieldset->addField('event_date', 'text', array(
+		$fieldset->addField('event_date', 'date', array(
 			'label' => 'Event Date',
 			'class' => 'required-entry',
 			'required' => true,
-			'name' => 'event_date'
+			'after_element_html' => '<small>click to set</small>',
+			'name' => 'event_date',
+			'image' => $this->getSkinUrl('images/grid-cal.gif'), // See more at: http://excellencemagentoblog.com/magento-admin-form-field#sthash.YFqGJWrt.dpuf
+			'format' => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT)
 		));
 		$fieldset->addField('event_country', 'text', array(
 			'label' => 'Event Country',

@@ -23,7 +23,7 @@ extends Mage_Adminhtml_Block_Widget_Form_Container {
 		$rd = Mage::registry('registry_data');
 
 		if($rd && $rd->getId()){
-			return $this->helper->__("Edit Registry '%s'", $this->escapeHtml($rd->getTitle()));
+			return $this->helper->__("Edit Registry '%s'", $this->escapeHtml($rd->getEventName()));
 		}
 		return $this->helper->__('Add Registry');
 	}

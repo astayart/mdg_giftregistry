@@ -17,7 +17,8 @@ $allowedFunctions = array(
 	'streamTest',
 	'createTabFields',
 	'checkCountryCode',
-	'checkItemSku'
+	'checkItemSku',
+	'getAttributes'
 );
 $html = new HtmlOutputter();
 $html->startHtml()->startBody();
@@ -37,6 +38,42 @@ if (isset($f) && in_array($f, $allowedFunctions)) {
 	$html->para("allowed functions:");
 	showAllowedFunctions($html);
 	exit;
+}
+
+
+function getAttributes() {
+	global $html;
+
+	$handle = fopen("/var/www/magentoee.1-13.local/htdocs/magento/var/hawksearch/feeds/attributes.txt",'r');
+	$keys = fgetcsv($handle, 0, "\t");
+	$atts = array();
+	while( $vals = fgetcsv($handle, 0, "\t")) {
+		if( $vals[0] == 'vin-bw' ){
+			$atts[] = array('attribute' => $vals[1], 'value' => $vals[2]);
+		}
+	}
+	$html->para('done, found ' . count($atts) . ' attributes');
+	$html->startList();
+	foreach($atts as $a) {
+		$html->listItem($a['attribute'] . ': ' . $a['value']);
+	}
+	$html->endList();
+
+	fclose($handle);
+
+
+
+	/** @var Mage_Catalog_Model_Product $product */
+//	$product = Mage::helper('catalog/product')->getProduct('10780', Mage::app()->getStore()->getId(), 'sku');
+//	//$html->para('the guitar: ' . print_r($product, true));
+//	$atts = $product->getAttributes();
+//
+//	ksort($atts);
+//	foreach(array_keys($atts) as $a) {
+//		$html->para($a);
+//	}
+
+
 }
 
 function checkItemSku() {
@@ -257,6 +294,26 @@ class HtmlOutputter {
 		echo '<p>', $content, "</p>\n";
 		return $this;
 	}
+	public function pre($content) {
+		echo '<pre>', print_r($content,true), "</pre>\n";
+		return $this;
+	}
+	public function code($content) {
+		echo '<code>', $content, "</code>\n";
+		return $this;
+	}
+	public function startList() {
+		echo '<ul>', "\n";
+		return $this;
+	}
+	public function endList() {
+		echo "</ul>\n";
+		return $this;
+	}
+	public function listItem($content) {
+		echo '<li>' . $content . "</li>\n";
+		return $this;
+	}
 }
 
 
@@ -327,5 +384,14 @@ class CsvWriteBuffer {
 		ftruncate($this->tempBuffer, 0);
 		rewind($this->tempBuffer);
 		$this->currentSize = 0;
+	}
+}
+class TestObject {
+	private $value;
+	private $array;
+	public function __construct($value){
+		$this->value = $value;
+		$this->array['value'] =  $value;
+		$this->array['ammendedvalue'] = $value . ' ammended';
 	}
 }
