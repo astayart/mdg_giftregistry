@@ -11,7 +11,7 @@ $helper = Mage::helper('mdg_giftregistry');
 ?>
 <div class="customer-list">
     <?php if (!$collection->count()): ?>
-        <h2><?php echo $this->__('No registries created') ?></h2>
+        <h2><?php echo $this->__('No registries created, found ' . $collection->count() . ' registries.') ?></h2>
     <?php else: ?>
         <ul>
             <?php foreach ($collection as $registry): ?>

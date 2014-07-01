@@ -13,12 +13,23 @@ require 'app/Mage.php';
 Mage::setIsDeveloperMode(true);
 $app = Mage::app();
 $f = $app->getRequest()->getParam('f');
+if (empty($f)) {
+	$pi = $app->getRequest()->getPathInfo();
+	preg_match('#^/f/([^/]+)$#', $pi, $match);
+	if (count($match) > 0) {
+		$f = $match[1];
+	}
+}
 $allowedFunctions = array(
 	'streamTest',
 	'createTabFields',
 	'checkCountryCode',
 	'checkItemSku',
-	'getAttributes'
+	'getAttributes',
+	'xmlRpcSession',
+	'getSoapSessionToken',
+	'getRestSessionToken',
+	'oAuthCallback'
 );
 $html = new HtmlOutputter();
 $html->startHtml()->startBody();
@@ -32,35 +43,141 @@ if (isset($f) && in_array($f, $allowedFunctions)) {
 	} catch (Exception $e) {
 		$html->para("failed to run function $f");
 		$html->para($e->getMessage());
+		$html->pre($e->getTraceAsString());
 	}
 } else {
-	$html->para( "mtest php is designed to take an arg 'f' and execute a designated function");
-	$html->para("allowed functions:");
-	showAllowedFunctions($html);
+	$html->para("Available functions:");
+	showAllowedFunctions();
 	exit;
 }
 
+function oAuthCallback() {
+	global $html;
+	global $app;
+	$param = $app->getRequest()->getParam('test');
+	$html->para('got test param: ' . $param);
+
+}
+
+function getRestSessionToken() {
+	global $html;
+	$callbackUrl = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '/f/oAuthCallback';
+	$temporaryCredentialsRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/oauth/initiate?oauth_callback=' . urlencode($callbackUrl);
+	$adminAuthorizationUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/admin/oauth_authorize';
+	$accessTokenRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/oauth/token';
+	$apiUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/api/rest';
+	$consumerKey = 'nsdzw5xdw5gamn877kr3l3kkizq4ikbw';
+	$consumerSecret = 'nr0wd0kxbtade23ekmw031f9icl27nl1';
+
+	session_start();
+	if (!isset($_GET['oauth_token']) && isset($_SESSION['state']) && $_SESSION['state'] == 1) {
+		$_SESSION['state'] = 0;
+	}
+	try {
+		$authType = ($_SESSION['state'] == 2) ? OAUTH_AUTH_TYPE_AUTHORIZATION : OAUTH_AUTH_TYPE_URI;
+		$oauthClient = new OAuth($consumerKey, $consumerSecret, OAUTH_SIG_METHOD_HMACSHA1, $authType);
+		$oauthClient->enableDebug();
+
+		if (!isset($_GET['oauth_token']) && !$_SESSION['state']) {
+			$requestToken = $oauthClient->getRequestToken($temporaryCredentialsRequestUrl);
+			$_SESSION['secret'] = $requestToken['oauth_token_secret'];
+			$_SESSION['state'] = 1;
+			header('Location: ' . $adminAuthorizationUrl . '?oauth_token=' . $requestToken['oauth_token']);
+			exit;
+		} else if ($_SESSION['state'] == 1) {
+			$oauthClient->setToken($_GET['oauth_token'], $_SESSION['secret']);
+			$accessToken = $oauthClient->getAccessToken($accessTokenRequestUrl);
+			$_SESSION['state'] = 2;
+			$_SESSION['token'] = $accessToken['oauth_token'];
+			$_SESSION['secret'] = $accessToken['oauth_token_secret'];
+			header('Location: ' . $callbackUrl);
+			exit;
+		} else {
+			$oauthClient->setToken($_SESSION['token'], $_SESSION['secret']);
+			$resourceUrl = "$apiUrl/products";
+			$productData = json_encode(array(
+				'type_id' => 'simple',
+				'attribute_set_id' => 4,
+				'sku' => 'simple' . uniqid(),
+				'weight' => 1,
+				'status' => 1,
+				'visibility' => 4,
+				'name' => 'Simple Product',
+				'description' => 'Simple Description',
+				'short_description' => 'Simple Short Description',
+				'price' => 99.95,
+				'tax_class_id' => 0,
+			));
+			$headers = array('Content-Type' => 'application/json');
+			$oauthClient->fetch($resourceUrl, $productData, OAUTH_HTTP_METHOD_POST, $headers);
+			print_r($oauthClient->getLastResponseInfo());
+		}
+	} catch (OAuthException $e) {
+		print_r($e);
+	}
+}
+
+function getSoapSessionToken() {
+	global $html;
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$client = new SoapClient('http://' . $_SERVER['SERVER_NAME'] . '/magento/api/v2_soap/?wsdl');
+	$sessionId = $client->login($apiUser, $apiKey);
+
+	$html->para('found soap session id: ' . $sessionId);
+}
+
+function xmlRpcSession() {
+	global $html;
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$client = new Zend_XmlRpc_Client('http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/');
+
+	$html->para('using API: ' . 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/');
+	if (!isset($sessionId)) {
+		$sessionId = $client->call('login', array($apiUser, $apiKey));
+		$html->para('received sessionid: ' . $sessionId);
+	}
+	$actions = array(
+		'xmlCatalogProductList'
+	);
+	foreach ($actions as $action) {
+		$html->para("<a href=\"/magento/mtest.php?f=xmlRpcSession&t=${sessionId}&a=${action}\">" . $action . '</a>');
+	}
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		// execute action...
+		call_user_func($a, $client, $sessionId);
+	}
+
+}
+
+function xmlCatalogProductList($client, $sessionId) {
+	$res = $client->call('call', array($sessionId, 'catalog_product.list'));
+	global $html;
+	$html->pre(print_r($res, true));
+}
 
 function getAttributes() {
 	global $html;
 
-	$handle = fopen("/var/www/magentoee.1-13.local/htdocs/magento/var/hawksearch/feeds/attributes.txt",'r');
+	$handle = fopen("/var/www/magentoee.1-13.local/htdocs/magento/var/hawksearch/feeds/attributes.txt", 'r');
 	$keys = fgetcsv($handle, 0, "\t");
 	$atts = array();
-	while( $vals = fgetcsv($handle, 0, "\t")) {
-		if( $vals[0] == 'vin-bw' ){
+	while ($vals = fgetcsv($handle, 0, "\t")) {
+		if ($vals[0] == 'vin-bw') {
 			$atts[] = array('attribute' => $vals[1], 'value' => $vals[2]);
 		}
 	}
 	$html->para('done, found ' . count($atts) . ' attributes');
 	$html->startList();
-	foreach($atts as $a) {
+	foreach ($atts as $a) {
 		$html->listItem($a['attribute'] . ': ' . $a['value']);
 	}
 	$html->endList();
 
 	fclose($handle);
-
 
 
 	/** @var Mage_Catalog_Model_Product $product */
@@ -82,19 +199,19 @@ function checkItemSku() {
 	$delim = "\t";
 	$headerRow = true;
 	$csv = new CsvReader($filename, $delim, $headerRow);
-	if($csv !== false) {
+	if ($csv !== false) {
 		$a = array();
-		while($csv->nextRow()){
-			if(isset($a[$csv->item('sku')]) && is_array($a[$csv->item('sku')])){
+		while ($csv->nextRow()) {
+			if (isset($a[$csv->item('sku')]) && is_array($a[$csv->item('sku')])) {
 				$a[$csv->item('sku')][] = new HawkItem($csv);
 			} else {
 				$a[$csv->item('sku')] = array(new HawkItem($csv));
 			}
 		}
 		$csv->close();
-		foreach (array_keys($a) as $key){
-			if(count($a[$key]) > 1) {
-				if(($col = compareItems($a[$key])) !== false){
+		foreach (array_keys($a) as $key) {
+			if (count($a[$key]) > 1) {
+				if (($col = compareItems($a[$key])) !== false) {
 					$map = $csv->getMap();
 					$idx = array_keys($map, $col);
 					$name = $idx[0];
@@ -106,14 +223,14 @@ function checkItemSku() {
 	}
 }
 
-function compareItems($hi){
+function compareItems($hi) {
 	/* start with the first row, and check each other row for differences. if
 	 * found, stop and return true
 	 */
 
-	for($i = 1; $i < count($hi); $i++) {
-		for($j = 0; $j < $hi[0]->itemCount(); $j++) {
-			if($hi[0]->item($j) != $hi[$i]->item($j)) {
+	for ($i = 1; $i < count($hi); $i++) {
+		for ($j = 0; $j < $hi[0]->itemCount(); $j++) {
+			if ($hi[0]->item($j) != $hi[$i]->item($j)) {
 				return $j;
 			}
 		}
@@ -191,24 +308,28 @@ function getTempDirList() {
 	return $dir;
 }
 
-function showAllowedFunctions($html) {
+function showAllowedFunctions() {
+	global $html;
 	global $allowedFunctions;
-	foreach($allowedFunctions as $func){
+	foreach ($allowedFunctions as $func) {
 		$html->para("<a href=\"/magento/mtest.php?f=$func\">" . $func . '</a>');
 	}
 }
 
 class HawkItem {
 	private $values;
+
 	/** @var $row CsvReader */
-	public function __construct($row){
-		foreach($row->getMap() as $key => $idx) {
+	public function __construct($row) {
+		foreach ($row->getMap() as $key => $idx) {
 			$this->values[$idx] = $row->item($key);
 		}
 	}
+
 	public function item($idx) {
 		return $this->values[$idx];
 	}
+
 	public function itemCount() {
 		return count($this->values);
 	}
@@ -221,18 +342,18 @@ class CsvReader {
 	private $delimiter;
 	private $data;
 
-	public function __construct($fn, $d, $head){
+	public function __construct($fn, $d, $head) {
 		$this->fileName = $fn;
 		$this->delimiter = $d;
 		$this->handle = fopen($this->fileName, "r");
-		if($this->handle !== false) {
-			if($head) {
+		if ($this->handle !== false) {
+			if ($head) {
 				$map = array();
 				$fields = fgetcsv($this->handle, 0, $this->delimiter);
-				if($fields === false){
+				if ($fields === false) {
 					return false;
 				}
-				for($i = 0; $i < count($fields); $i++){
+				for ($i = 0; $i < count($fields); $i++) {
 					$map[$fields[$i]] = $i;
 				}
 				$this->hMap = $map;
@@ -241,22 +362,26 @@ class CsvReader {
 			return false;
 		}
 	}
-	public function nextRow(){
+
+	public function nextRow() {
 		$this->data = fgetcsv($this->handle, 0, $this->delimiter);
 		return $this->data;
 	}
-	public function item($field){
-		if(is_array($this->data)){
+
+	public function item($field) {
+		if (is_array($this->data)) {
 			return $this->data[$this->hMap[$field]];
 		}
 		return false;
 	}
-	public function close(){
-		if($this->handle){
+
+	public function close() {
+		if ($this->handle) {
 			fclose($this->handle);
 		}
 	}
-	public function getMap(){
+
+	public function getMap() {
 		return $this->hMap;
 	}
 
@@ -266,50 +391,62 @@ class HtmlOutputter {
 	public function __construct() {
 
 	}
+
 	public function startHtml() {
 		echo "<html>\n";
 		return $this;
 	}
+
 	public function startHead() {
 		echo "<head>\n";
 		return $this;
 	}
+
 	public function endHead() {
 		echo "</head>\n";
 		return $this;
 	}
+
 	public function startBody() {
 		echo "<body>\n";
 		return $this;
 	}
+
 	public function endBody() {
 		echo "</body>\n";
 		return $this;
 	}
+
 	public function endHtml() {
 		echo "</html>\n";
 		return $this;
 	}
+
 	public function para($content) {
 		echo '<p>', $content, "</p>\n";
 		return $this;
 	}
+
 	public function pre($content) {
-		echo '<pre>', print_r($content,true), "</pre>\n";
+		echo '<pre>', print_r($content, true), "</pre>\n";
 		return $this;
 	}
+
 	public function code($content) {
 		echo '<code>', $content, "</code>\n";
 		return $this;
 	}
+
 	public function startList() {
 		echo '<ul>', "\n";
 		return $this;
 	}
+
 	public function endList() {
 		echo "</ul>\n";
 		return $this;
 	}
+
 	public function listItem($content) {
 		echo '<li>' . $content . "</li>\n";
 		return $this;
@@ -386,12 +523,14 @@ class CsvWriteBuffer {
 		$this->currentSize = 0;
 	}
 }
+
 class TestObject {
 	private $value;
 	private $array;
-	public function __construct($value){
+
+	public function __construct($value) {
 		$this->value = $value;
-		$this->array['value'] =  $value;
+		$this->array['value'] = $value;
 		$this->array['ammendedvalue'] = $value . ' ammended';
 	}
 }

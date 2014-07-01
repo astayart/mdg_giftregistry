@@ -15,13 +15,13 @@ class Mdg_Giftregistry_SearchController extends Mage_Core_Controller_Front_Actio
         $this->loadLayout();
         if($sp = $this->getRequest()->getParams()) {
             $results = Mage::getModel('mdg_giftregistry/entity')->getCollection();
-            if($sp['type']){
-                $results->addFieldToFilter('type_id', $sp['type']);
+            if(isset($sp['type_id'])){
+                $results->addFieldToFilter('type_id', $sp['type_id']);
             }
-            if($sp['date']){
+            if(isset($sp['date']) && !empty($sp['date'])){
                 $results->addFieldToFilter('event_date', $sp['date']);
             }
-            if($sp['location']){
+            if(isset($sp['location']) && !empty($sp['location'])){
                 $results->addFieldToFilter('event_location', $sp['location']);
             }
             $layout = $this->getLayout();

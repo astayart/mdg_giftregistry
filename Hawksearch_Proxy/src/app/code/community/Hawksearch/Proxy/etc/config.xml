@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Hawksearch_Proxy>
+            <version>1.0.0</version>
+        </Hawksearch_Proxy>
+    </modules>
+    <global>
+        <helpers>
+            <hawksearch_proxy>
+                <class>Hawksearch_Proxy_Helper</class>
+            </hawksearch_proxy>
+        </helpers>
+        <models>
+            <hawksearch_proxy>
+                <class>Hawksearch_Proxy_Model</class>
+            </hawksearch_proxy>
+        </models>
+    </global>
+</config>

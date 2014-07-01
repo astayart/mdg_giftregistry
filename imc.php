@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/local/bin/php
 <?php 
 declare(ticks = 1); 
 if (!is_readable('app/Mage.php')) {

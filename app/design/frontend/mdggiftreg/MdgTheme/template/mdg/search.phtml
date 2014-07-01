@@ -15,7 +15,7 @@ $helper = Mage::helper('mdg_giftregistry');
         <ul class="form-list">
             <li>
                 <label for="type"><?php echo $this->__('Event type') ?></label>
-                <select name="type" id="type">
+                <select name="type_id" id="type_id">
                     <?php foreach($helper->getEventTypes() as $type): ?>
                         <option id="<?php echo $type->getTypeId() ?>"
                             value="<?php echo $type->getTypeId() ?>">
@@ -47,7 +47,7 @@ $helper = Mage::helper('mdg_giftregistry');
             <button type="submit"
                     title="Save"
                     class="button">
-                <span><span><?php echo $this->__('Save') ?></span></span>
+                <span><span><?php echo $this->__('Search!') ?></span></span>
                     </button>
         </div>
     </fieldset>

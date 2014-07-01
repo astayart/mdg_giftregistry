@@ -27,6 +27,7 @@ class Mdg_Giftregistry_Block_Adminhtml_Registries_Edit_Form extends Mage_Adminht
 			$data = Mage::registry('registry_data')->getData();
 		}
 
+		/** @var Varien_Data_Form_Element_Fieldset $fieldset */
 		$fieldset = $form->addFieldset('registry_form', array(
 			'legend' => Mage::helper('mdg_giftregistry')->__('Gift Registry Information')
 		));
