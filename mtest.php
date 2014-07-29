@@ -1,4 +1,4 @@
-<?php
+<?php ob_start();
 /**
  * Created by PhpStorm.
  * User: astayart
@@ -9,7 +9,7 @@
 header("Content-Type: text/html");
 ini_set('display_errors', true);
 
-require 'app/Mage.php';
+require_once 'app/Mage.php';
 Mage::setIsDeveloperMode(true);
 $app = Mage::app();
 $f = $app->getRequest()->getParam('f');
@@ -26,10 +26,13 @@ $allowedFunctions = array(
 	'checkCountryCode',
 	'checkItemSku',
 	'getAttributes',
-	'xmlRpcSession',
-	'getSoapSessionToken',
-	'getRestSessionToken',
-	'oAuthCallback'
+	'jwasCheckItems',
+	'jwasCheckAttributes',
+	'zendVersion',
+	'showUsedSectionChildNodes',
+	'checkImages',
+	'allProductsTest',
+	'categoryTesting'
 );
 $html = new HtmlOutputter();
 $html->startHtml()->startBody();
@@ -51,21 +54,267 @@ if (isset($f) && in_array($f, $allowedFunctions)) {
 	exit;
 }
 
+function categoryTesting() {
+	global $html;
+	$collection = Mage::getModel('catalog/product')->getCollection();
+	$collection->addAttributeToSelect('sku');
+	$collection->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+
+	$collection->setPageSize(10);
+	$totalPages = $collection->getLastPageNumber();
+	$totalPages = 1;
+	$currentPage = 1;
+	do {
+		$collection->setCurPage($currentPage);
+		/** @var Mage_Catalog_Model_Product $product */
+		$html->startList();
+		foreach ($collection as $product) {
+			$ids = $product->getCategoryIds();
+			$product->load("fart gas");
+			$html->listItem("name: <b>{$product->getName()}</b>, sku: <b>{$product->getSku()}</b>, categories: <b>" . implode(", ", $ids) . "</b>");
+		}
+		$html->endList();
+		$collection->clear();
+		$currentPage++;
+	} while ($currentPage <= $totalPages);
+
+}
+
+
+function allProductsTest() {
+	global $html;
+	/** @var Mage_Catalog_Model_Resource_Product_Collection $collection */
+	$collection = Mage::getModel('catalog/product')->getCollection();
+	$collection->addAttributeToSelect('sku');
+	//$html->para('getting product collection type: ' . get_class($collection));
+	$collection->addAttributeToFilter('visibility', array('neq' => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE));
+	$collection->addAttributeToFilter('status', Mage_Catalog_Model_Product_Status::STATUS_ENABLED);
+
+	/** @var Mage_CatalogInventory_Model_Stock $stockfilter */
+	$stockfilter = Mage::getSingleton('cataloginventory/stock');
+	//$html->para('cataloginventory/stock type: '. get_class($stockfilter));
+//	$html->para('before instock filter: ');
+//	$html->pre($collection->getSelect()->__toString());
+	$stockfilter->addInStockFilterToCollection($collection);
+
+	/** @var Mage_Catalog_Model_Product_Visibility $visibilityFilter */
+	//$visibilityFilter = Mage::getSingleton('catalog/product_visibility');
+
+	//$collection->joinField('qty','cataloginventory/stock_item','qty','product_id=entity_id');
+
+	$html->para('after in stock filter: ');
+	$html->pre($collection->getSelect()->__toString());
+
+	$html->para('ok, lets try to use the page size gizmo to 10 items per page:');
+
+	$collection->setPageSize(20);
+	$totalPages = $collection->getLastPageNumber();
+	$html->para("we have $totalPages pages!");
+//	$totalProducts = $collection->count();
+//	$html->para("and we have $totalProducts products!");
+
+	$currentPage = 1;
+	do {
+		$collection->setCurPage($currentPage);
+		$html->para("starting page $currentPage.");
+		$html->startList();
+		foreach($collection as $product){
+			/** @var Mage_Catalog_Model_Product $product */
+			$product->load('media_gallery');
+			/** @var Varien_Data_Collection $images */
+			$images = $product->getMediaGalleryImages();
+			$image = $images->getLastItem();
+			$file = $image->getFile();
+
+			/* Gallery images should come out sorted,
+				but if not, try this instead of getLastItem(): */
+//			$pos = 0;
+//			foreach($images as $image){
+//				if($image->getPosition() >= $pos) {
+//					$pos = $image->getPosition();
+//					$file = $image->getFile();
+//				}
+//			}
+
+			$html->listItem("sku: {$product->getSku()}, position: {$image->getPosition()}, label: {$image->getLabel()}, file: $file");
+		}
+		$html->endList();
+		$collection->clear();
+		$currentPage++;
+	} while($currentPage <= $totalPages && $currentPage < 2);
+	$html->para('all done...');
+}
+
+function checkImages() {
+	global $html;
+	$model = Mage::getModel('catalog/product');
+
+	/** @var Mage_Catalog_Model_Product $product */
+	$product = $model->loadByAttribute('sku', 'simple53b5b2e465241');
+	if(! $product ) {
+		$html->para("load by attribute returned false!");
+	} else {
+		$html->para("got " . $product->getName());
+	}
+	$product->load("media_gallery");
+	/** @var Varien_Data_Collection $images */
+	$images = $product->getMediaGalleryImages();
+
+	$html->para("media gallery? " . print_r($images->getLastItem(), true));
+
+
+}
+
+
+function showUsedSectionChildNodes() {
+	global $html;
+	$doc = new DOMDocument();
+	$doc->load('MergedSysconfig.xml');
+	$xp = new DOMXPath($doc);
+
+	$nodes = $xp->query('//sections/*/*');
+
+	$frontendtypes = array();
+	$sourcemodels = array();
+	$fields = array();
+	$groups = array();
+	$seen = array();
+	/** @var DOMNode $node */
+	foreach ($nodes as $node) {
+		if (! in_array($node->nodeName, $seen)) {
+			$seen[] = $node->nodeName;
+		}
+		if('groups' == $node->nodeName) {
+			$gnodes = $xp->query($node->getNodePath() . '/*/*');
+			foreach($gnodes as $gnode){
+				if(!in_array($gnode->nodeName, $groups)){
+					$groups[] = $gnode->nodeName;
+				}
+				if('fields' == $gnode->nodeName){
+					$fnodes = $xp->query($gnode->getNodePath() . '/*/*');
+					/** @var DOMNode $fnode */
+					foreach($fnodes as $fnode) {
+						if(!in_array($fnode->nodeName, $fields)){
+							$fields[] = $fnode->nodeName;
+						}
+						if('frontend_type' == $fnode->nodeName) {
+							if(!in_array($fnode->nodeValue, $frontendtypes)){
+								$frontendtypes[]  = $fnode->nodeValue;
+							}
+						}
+						if('source_model' == $fnode->nodeName) {
+							if(!in_array($fnode->nodeValue, $sourcemodels)) {
+								$sourcemodels[] = $fnode->nodeValue;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	sort($seen);
+	$html->startList();
+	foreach ($seen as $name) {
+		$html->listItem($name);
+	}
+	$html->endList();
+
+	sort($groups);
+	$html->para("group nodes: ");
+	$html->startList();
+	foreach($groups as $g) {
+		$html->listItem($g);
+	}
+	$html->endList();
+
+	sort($fields);
+	$html->para("Field nodes: " );
+	$html->startList();
+	foreach ($fields as $field) {
+		$html->listItem($field);
+	}
+	$html->endList();
+
+	sort($frontendtypes);
+	$html->para("Frontend Types: ");
+	$html->startList();
+	foreach($frontendtypes as $type) {
+		$html->listItem($type);
+	}
+	$html->endList();
+	sort($sourcemodels);
+	$html->para("Source Models: ");
+	$html->startList();
+	foreach($sourcemodels as $type) {
+		$html->listItem($type);
+	}
+	$html->endList();
+}
+
+
+function zendVersion() {
+	global $html;
+	$html->para('zend version: ' . zend_version());
+}
+
+function jwasCheckAttributes() {
+	global $html;
+	$filename = '/home/magentouser/feeds/jw/attributes.txt';
+	$csv = new CsvReader($filename, "\t", true);
+	$a = array();
+	if ($csv !== false) {
+		while ($csv->nextRow()) {
+			if ($csv->item('unique_id') == '1112_C33676X-WHT') {
+				$a[] = array('key' => $csv->item('key'), 'value' => $csv->item('value'));
+			}
+		}
+		$csv->close();
+	}
+	$html->para('found attributes:');
+	$html->pre(print_r($a, true));
+}
+
+function jwasCheckItems() {
+	global $html;
+	$filename = '/home/magentouser/feeds/jw/items.txt';
+	$csv = new CsvReader($filename, "\t", true);
+	$a = array();
+	$b = array();
+	if ($csv !== false) {
+		while ($csv->nextRow()) {
+			if (strpos($csv->item('sku'), '1112_C33676X') === 0) {
+				$a[] = array('sku' => $csv->item('sku'), 'group_id' => $csv->item('group_id'));
+			}
+			if ($csv->item('group_id') == '147') {
+				$b[] = array('sku' => $csv->item('sku'), 'group_id' => $csv->item('group_id'));
+			}
+		}
+		$csv->close();
+	}
+	$html->para("found these items:");
+	$html->pre(print_r($a, true));
+	$html->para('found these items in group 147:');
+	$html->pre(print_r($b, true));
+}
+
 function oAuthCallback() {
 	global $html;
 	global $app;
-	$param = $app->getRequest()->getParam('test');
-	$html->para('got test param: ' . $param);
+	$param = $app->getRequest()->getParam('oauth_token');
+	$html->para('got oauth_token: ' . $param);
+	$param = $app->getRequest()->getParam('oauth_verifier');
+	$html->para('got oauth_verifier: ' . $param);
+	getRestSessionToken();
 
 }
 
 function getRestSessionToken() {
 	global $html;
 	$callbackUrl = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '/f/oAuthCallback';
-	$temporaryCredentialsRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/oauth/initiate?oauth_callback=' . urlencode($callbackUrl);
-	$adminAuthorizationUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/admin/oauth_authorize';
-	$accessTokenRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/oauth/token';
-	$apiUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/api/rest';
+	$temporaryCredentialsRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/oauth/initiate?oauth_callback=' . urlencode($callbackUrl);
+	$adminAuthorizationUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/admin/oauth_authorize';
+	$accessTokenRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/oauth/token';
+	$apiUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/rest';
 	$consumerKey = 'nsdzw5xdw5gamn877kr3l3kkizq4ikbw';
 	$consumerSecret = 'nr0wd0kxbtade23ekmw031f9icl27nl1';
 
@@ -74,11 +323,13 @@ function getRestSessionToken() {
 		$_SESSION['state'] = 0;
 	}
 	try {
-		$authType = ($_SESSION['state'] == 2) ? OAUTH_AUTH_TYPE_AUTHORIZATION : OAUTH_AUTH_TYPE_URI;
+
+		$authType = (isset($_SESSION['state']) && $_SESSION['state'] == 2) ? OAUTH_AUTH_TYPE_AUTHORIZATION : OAUTH_AUTH_TYPE_URI;
 		$oauthClient = new OAuth($consumerKey, $consumerSecret, OAUTH_SIG_METHOD_HMACSHA1, $authType);
 		$oauthClient->enableDebug();
 
-		if (!isset($_GET['oauth_token']) && !$_SESSION['state']) {
+		if (!isset($_GET['oauth_token']) && !isset($_SESSION['state'])) {
+			$html->para("here");
 			$requestToken = $oauthClient->getRequestToken($temporaryCredentialsRequestUrl);
 			$_SESSION['secret'] = $requestToken['oauth_token_secret'];
 			$_SESSION['state'] = 1;
@@ -166,7 +417,7 @@ function getAttributes() {
 	$keys = fgetcsv($handle, 0, "\t");
 	$atts = array();
 	while ($vals = fgetcsv($handle, 0, "\t")) {
-		if ($vals[0] == 'vin-bw') {
+		if ($vals[0] == '0411_JWC1003-AS' ) {
 			$atts[] = array('attribute' => $vals[1], 'value' => $vals[2]);
 		}
 	}
@@ -273,6 +524,7 @@ function mdg_giftregistry() {
 //echo get_class($registry);
 
 }
+
 
 function checkCountryCode() {
 	global $app;

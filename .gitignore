@@ -46,7 +46,7 @@ mage
 php.ini*
 RELEASE*
 !.gitignore
-!imc.php
-!test.php
+imc.php
+!mdgtest.php
 !demo.php
 MagentoKey.txt

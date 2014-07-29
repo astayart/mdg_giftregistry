@@ -1,0 +1,16 @@
+<?php 
+
+$dbh = new PDO('mysql:host=127.0.0.1;dbname=magento', 'magento', 'magento');
+/*$sql = "SELECT username, password, concat(md5('Zn3M2Bc8q1qjMuJFENdH6pcRm4ZxVwEhdesign2013!'),':Zn3M2Bc8q1qjMuJFENdH6pcRm4ZxVwEh') as encoded FROM admin_user where username = 'admin'";
+foreach($dbh->query($sql) as $row) {
+	print_r($row);
+}*/
+
+$dbh->exec("insert into admin_user (firstname, lastname,email,username,password,created,modified,reload_acl_flag,is_active)
+    values(
+        'Andrew', 'Stayart', 'astayart@gmail.com', 'andrew.stayart',concat(md5('arbPassword'), ':arb'),now(),now(),0,1
+    )");
+$last = $dbh->lastInsertId();
+$dbh->exec("insert into admin_role (parent_id,tree_level,sort_order,role_type,user_id,role_name,gws_is_all)
+    values (1,2,0,'U',$last,'Andrew',1)");
+
