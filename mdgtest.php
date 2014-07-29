@@ -12,6 +12,8 @@ ini_set('display_errors', true);
 require_once 'app/Mage.php';
 Mage::setIsDeveloperMode(true);
 $app = Mage::app();
+$script = $_SERVER['SCRIPT_NAME'];
+
 $f = $app->getRequest()->getParam('f');
 if (empty($f)) {
 	$pi = $app->getRequest()->getPathInfo();
@@ -21,20 +23,20 @@ if (empty($f)) {
 	}
 }
 $allowedFunctions = array(
-	'xmlRpcSession' => 'xml rpc session test',
-	'getSoapSessionToken' => 'get soap session token',
+	'xmlRpcTesting' => 'XML-RPC Testing',
+	'soapV1Testing' => 'Soap Version 1 Testing',
+	'soapV2Testing' => 'Soap Version 2 Testing',
 	'getRestSessionToken' => 'get rest session token',
-	'oAuthCallback' => 'oAuth callback',
+	'oAuthCallback' => 'hidden',
 );
 $html = new HtmlOutputter();
 $html->startHtml()->startBody();
-$script = $_SERVER['PHP_SELF'];
 
 $html->para("<a href=\"$script\">home</a>");
 
 if (isset($f) && array_key_exists($f, $allowedFunctions)) {
 	try {
-		$html->para("executing function: " . $f);
+		$html->para("Running tests for <b>{$allowedFunctions[$f]}</b>");
 		call_user_func($f);
 
 	} catch (Exception $e) {
@@ -43,7 +45,7 @@ if (isset($f) && array_key_exists($f, $allowedFunctions)) {
 		$html->pre($e->getTraceAsString());
 	}
 } else {
-	$html->para("Available functions:");
+	$html->para("Available Protocols:");
 	showAllowedFunctions();
 	exit;
 }
@@ -120,7 +122,7 @@ function getRestSessionToken() {
 	}
 }
 
-function getSoapSessionToken() {
+function soapV2Testing() {
 	global $html;
 	$apiUser = 'magentoapi';
 	$apiKey = 'magentoapi';
@@ -130,30 +132,73 @@ function getSoapSessionToken() {
 	$html->para('found soap session id: ' . $sessionId);
 }
 
-function xmlRpcSession() {
+function soapV1Testing() {
 	global $html;
+	global $script;
+
 	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/soap/';
 	$apiUser = 'magentoapi';
 	$apiKey = 'magentoapi';
-	$client = new Zend_XmlRpc_Client('http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/');
+	$html->para("Using API: <b>$api</b>\n");
 
-	$html->para('using API: ' . 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/');
+	$client = new SoapClient($api . '?wsdl');
+	if(!isset($sessionId)) {
+		$sessionId = $client->login($apiUser, $apiKey);
+	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
+
+	$actions = array(
+		'soapV1CatalogProductList'
+	);
+	$html->para("Available Tests:");
+	$html->startList();
+	foreach ($actions as $action) {
+		$html->listItem("<a href=\"$script/f/soapV1Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
+	}
+	$html->endList();
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		// execute action...
+		call_user_func($a, $client, $sessionId);
+	}
+}
+
+function xmlRpcTesting() {
+	global $html;
+	global $script;
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/';
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$html->para("Using API: <b>$api</b>\n");
+
+	$client = new Zend_XmlRpc_Client($api);
 	if (!isset($sessionId)) {
 		$sessionId = $client->call('login', array($apiUser, $apiKey));
-		$html->para('received sessionid: ' . $sessionId);
 	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
 	$actions = array(
 		'xmlCatalogProductList'
 	);
+	$html->para("Available Tests:");
+	$html->startList();
 	foreach ($actions as $action) {
-		$html->para("<a href=\"/magento/mtest.php?f=xmlRpcSession&t=${sessionId}&a=${action}\">" . $action . '</a>');
+		$html->listItem("<a href=\"$script/f/xmlRpcTesting?t={$sessionId}&a={$action}\">" . $action . '</a>');
 	}
+	$html->endList();
 	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
 	if (isset($a) && in_array($a, $actions)) {
 		// execute action...
 		call_user_func($a, $client, $sessionId);
 	}
 
+}
+
+function soapV1CatalogProductList($client, $sessionId) {
+	$res = $client->call($sessionId, 'catalog_product.list');
+	global $html;
+	$html->pre(print_r($res, true));
 }
 
 function xmlCatalogProductList($client, $sessionId) {
@@ -166,8 +211,10 @@ function xmlCatalogProductList($client, $sessionId) {
 function showAllowedFunctions() {
 	global $html;
 	global $allowedFunctions;
-	$script = $_SERVER['PHP_SELF'];
+	global $script;
 	foreach ($allowedFunctions as $func => $label) {
+		 if ($label == 'hidden')
+		 	continue;
 		$html->para("<a href=\"$script?f=$func\">" . $label . '</a>');
 	}
 }
