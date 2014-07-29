@@ -47,6 +47,7 @@ php.ini*
 RELEASE*
 !.gitignore
 imc.php
-!mdgtest.php
-!demo.php
+mtest.php
 MagentoKey.txt
+MergedConfig.xml
+MergedSysconfig.xml
