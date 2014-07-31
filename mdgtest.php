@@ -117,16 +117,6 @@ function restApiTesting() {
 	}
 }
 
-function restCatalogProductList($apiUrl, $oauthClient) {
-	global $html;
-	$resourceUrl = "$apiUrl/products";
-	$query = http_build_query(array('filter' => array(array('attribute' => 'color', 'in' => '16'))));
-	$headers = array('Content-Type' => 'application/json');
-	$oauthClient->fetch(implode("?", array($resourceUrl, $query)), array(), OAUTH_HTTP_METHOD_GET, $headers);
-	$html->pre(json_decode($oauthClient->getLastResponse()));
-
-}
-
 function soapV2Testing() {
 	global $html;
 	global $script;
@@ -223,6 +213,12 @@ function xmlRpcTesting() {
 
 }
 
+function xmlCatalogProductList($client, $sessionId) {
+	$res = $client->call('call', array($sessionId, 'catalog_product.list', array(array('color' => array('eq' => '16')))));
+	global $html;
+	$html->pre(print_r($res, true));
+}
+
 function soapV1CatalogProductList($client, $sessionId) {
 	$res = $client->call($sessionId, 'catalog_product.list', array(array('color' => array('eq' => '16'))));
 	global $html;
@@ -230,10 +226,20 @@ function soapV1CatalogProductList($client, $sessionId) {
 }
 function soapV2CatalogProductList($client, $sessionId) {
 	$res = $client->catalogProductList($sessionId, array('filter' => array(array('key' => 'color', 'value' => '16'))));
-	//$res = $client->catalogProductList($sessionId, array('complex_filter' => array(array('key' => 'color', 'value' => array('key' => 'like', 'value' => 'red')))));
+	//$res = $client->catalogProductList($sessionId, array('complex_filter' => array(array('key' => 'color', 'value' => array('key' => 'like', 'value' => '16')))));
 	global $html;
 	$html->pre(print_r($res, true));
 }
+
+function restCatalogProductList($apiUrl, $oauthClient) {
+	global $html;
+	$resourceUrl = "$apiUrl/products";
+	$query = http_build_query(array('filter' => array(array('attribute' => 'color', 'in' => '16'))));
+	$headers = array('Content-Type' => 'application/json');
+	$oauthClient->fetch(implode("?", array($resourceUrl, $query)), array(), OAUTH_HTTP_METHOD_GET, $headers);
+	$html->pre(json_decode($oauthClient->getLastResponse()));
+}
+
 function soapV2ShowFunctions($client, $sessionId) {
 	global $html;
 	$html->startList();
@@ -244,11 +250,6 @@ function soapV2ShowFunctions($client, $sessionId) {
 	$html->endList();
 }
 
-function xmlCatalogProductList($client, $sessionId) {
-	$res = $client->call('call', array($sessionId, 'catalog_product.list'));
-	global $html;
-	$html->pre(print_r($res, true));
-}
 
 
 function showAllowedFunctions() {
