@@ -26,13 +26,12 @@ $allowedFunctions = array(
 	'xmlRpcTesting' => 'XML-RPC Testing',
 	'soapV1Testing' => 'Soap Version 1 Testing',
 	'soapV2Testing' => 'Soap Version 2 Testing',
-	'getRestSessionToken' => 'get rest session token',
-	'oAuthCallback' => 'hidden',
+	'restApiTesting' => 'REST API Testing',
 );
 $html = new HtmlOutputter();
 $html->startHtml()->startBody();
 
-$html->para("<a href=\"$script\">home</a>");
+$html->para("<a href=\"{$script}\">home</a>");
 
 if (isset($f) && array_key_exists($f, $allowedFunctions)) {
 	try {
@@ -50,21 +49,10 @@ if (isset($f) && array_key_exists($f, $allowedFunctions)) {
 	exit;
 }
 
-
-function oAuthCallback() {
-	global $html;
-	global $app;
-	$param = $app->getRequest()->getParam('oauth_token');
-	$html->para('got oauth_token: ' . $param);
-	$param = $app->getRequest()->getParam('oauth_verifier');
-	$html->para('got oauth_verifier: ' . $param);
-	getRestSessionToken();
-
-}
-
-function getRestSessionToken() {
-	global $html;
-	$callbackUrl = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '/f/oAuthCallback';
+function restApiTesting() {
+	error_log('restApiTesting called');
+	global $html, $script;
+	$callbackUrl = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'] . '/f/restApiTesting';
 	$temporaryCredentialsRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/oauth/initiate?oauth_callback=' . urlencode($callbackUrl);
 	$adminAuthorizationUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/admin/oauth_authorize';
 	$accessTokenRequestUrl = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/oauth/token';
@@ -75,6 +63,7 @@ function getRestSessionToken() {
 	session_start();
 	if (!isset($_GET['oauth_token']) && isset($_SESSION['state']) && $_SESSION['state'] == 1) {
 		$_SESSION['state'] = 0;
+		//error_log('setting session state to zero');
 	}
 	try {
 
@@ -83,13 +72,14 @@ function getRestSessionToken() {
 		$oauthClient->enableDebug();
 
 		if (!isset($_GET['oauth_token']) && !isset($_SESSION['state'])) {
-			$html->para("here");
+			//error_log('no oauth token and no session state');
 			$requestToken = $oauthClient->getRequestToken($temporaryCredentialsRequestUrl);
 			$_SESSION['secret'] = $requestToken['oauth_token_secret'];
 			$_SESSION['state'] = 1;
 			header('Location: ' . $adminAuthorizationUrl . '?oauth_token=' . $requestToken['oauth_token']);
 			exit;
 		} else if ($_SESSION['state'] == 1) {
+			//error_log('session state is 1');
 			$oauthClient->setToken($_GET['oauth_token'], $_SESSION['secret']);
 			$accessToken = $oauthClient->getAccessToken($accessTokenRequestUrl);
 			$_SESSION['state'] = 2;
@@ -98,38 +88,76 @@ function getRestSessionToken() {
 			header('Location: ' . $callbackUrl);
 			exit;
 		} else {
+			//error_log('session state: ' . $_SESSION['state']);
+			/*
+			 * ok, so this is the point where we can start interacting with
+			 * the api. The token and secret are in the session, so lets list
+			 * out the available actions and see if we can't get them running
+			 */
+			$html->para("Using API: <b>$apiUrl</b>\n");
+			$html->para("Using token <b>{$_SESSION['token']}</b>, secret <b>{$_SESSION['secret']}</b>");
+
 			$oauthClient->setToken($_SESSION['token'], $_SESSION['secret']);
-			$resourceUrl = "$apiUrl/products";
-			$productData = json_encode(array(
-				'type_id' => 'simple',
-				'attribute_set_id' => 4,
-				'sku' => 'simple' . uniqid(),
-				'weight' => 1,
-				'status' => 1,
-				'visibility' => 4,
-				'name' => 'Simple Product',
-				'description' => 'Simple Description',
-				'short_description' => 'Simple Short Description',
-				'price' => 99.95,
-				'tax_class_id' => 0,
-			));
-			$headers = array('Content-Type' => 'application/json');
-			$oauthClient->fetch($resourceUrl, $productData, OAUTH_HTTP_METHOD_POST, $headers);
-			print_r($oauthClient->getLastResponseInfo());
+			$actions = array(
+				'restCatalogProductList'
+			);
+			$html->para("Available Tests:");
+			$html->startList();
+			foreach ($actions as $action) {
+				$html->listItem("<a href=\"{$script}/f/restApiTesting?a={$action}\">" . $action . '</a>');
+			}
+			$html->endList();
+			$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+			if (isset($a) && in_array($a, $actions)) {
+				call_user_func($a, $apiUrl, $oauthClient);
+			}
 		}
 	} catch (OAuthException $e) {
-		print_r($e);
+		$html->pre(print_r($e, true));
 	}
+}
+
+function restCatalogProductList($apiUrl, $oauthClient) {
+	global $html;
+	$resourceUrl = "$apiUrl/products";
+	$query = http_build_query(array('filter' => array(array('attribute' => 'color', 'in' => '16'))));
+	$headers = array('Content-Type' => 'application/json');
+	$oauthClient->fetch(implode("?", array($resourceUrl, $query)), array(), OAUTH_HTTP_METHOD_GET, $headers);
+	$html->pre(json_decode($oauthClient->getLastResponse()));
+
 }
 
 function soapV2Testing() {
 	global $html;
+	global $script;
+
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
 	$apiUser = 'magentoapi';
 	$apiKey = 'magentoapi';
-	$client = new SoapClient('http://' . $_SERVER['SERVER_NAME'] . '/magento/api/v2_soap/?wsdl');
-	$sessionId = $client->login($apiUser, $apiKey);
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/v2_soap/';
 
-	$html->para('found soap session id: ' . $sessionId);
+	$html->para("Using API: <b>$api</b>\n");
+
+	$client = new SoapClient($api . '?wsdl');
+	if(!isset($sessionId)) {
+		$sessionId = $client->login($apiUser, $apiKey);
+	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
+	$actions = array(
+		'soapV2ShowFunctions',
+		'soapV2CatalogProductList'
+	);
+	$html->para("Available Tests:");
+	$html->startList();
+	foreach ($actions as $action) {
+		$html->listItem("<a href=\"{$script}/f/soapV2Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
+	}
+	$html->endList();
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		call_user_func($a, $client, $sessionId);
+	}
+
 }
 
 function soapV1Testing() {
@@ -199,6 +227,21 @@ function soapV1CatalogProductList($client, $sessionId) {
 	$res = $client->call($sessionId, 'catalog_product.list');
 	global $html;
 	$html->pre(print_r($res, true));
+}
+function soapV2CatalogProductList($client, $sessionId) {
+	$res = $client->catalogProductList($sessionId, array('filter' => array(array('key' => 'color', 'value' => '16'))));
+	//$res = $client->catalogProductList($sessionId, array('complex_filter' => array(array('key' => 'color', 'value' => array('key' => 'like', 'value' => 'red')))));
+	global $html;
+	$html->pre(print_r($res, true));
+}
+function soapV2ShowFunctions($client, $sessionId) {
+	global $html;
+	$html->startList();
+	foreach($client->__getFunctions() as $func) {
+		preg_match('/^(.*?)\s+(.*?)\((.*?)\)$/',$func, $m);
+		$html->listItem("{$m[1]} <b>{$m[2]}</b> ( {$m[3]} )");
+	}
+	$html->endList();
 }
 
 function xmlCatalogProductList($client, $sessionId) {
