@@ -224,7 +224,7 @@ function xmlRpcTesting() {
 }
 
 function soapV1CatalogProductList($client, $sessionId) {
-	$res = $client->call($sessionId, 'catalog_product.list');
+	$res = $client->call($sessionId, 'catalog_product.list', array(array('color' => array('eq' => '16'))));
 	global $html;
 	$html->pre(print_r($res, true));
 }
@@ -258,7 +258,7 @@ function showAllowedFunctions() {
 	foreach ($allowedFunctions as $func => $label) {
 		 if ($label == 'hidden')
 		 	continue;
-		$html->para("<a href=\"$script?f=$func\">" . $label . '</a>');
+		$html->para("<a href=\"{$script}?f=$func\">{$label}</a>");
 	}
 }
 
