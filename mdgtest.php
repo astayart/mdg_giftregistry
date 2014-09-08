@@ -49,6 +49,102 @@ if (isset($f) && array_key_exists($f, $allowedFunctions)) {
 	exit;
 }
 
+function xmlRpcTesting() {
+	global $html;
+	global $script;
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/';
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$html->para("Using API: <b>$api</b>\n");
+
+	$client = new Zend_XmlRpc_Client($api);
+	if (!isset($sessionId)) {
+		$sessionId = $client->call('login', array($apiUser, $apiKey));
+	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
+	$actions = array(
+		'xmlCatalogProductList'
+	);
+	$html->para("Available Tests:");
+	$html->startList();
+	foreach ($actions as $action) {
+		$html->listItem("<a href=\"$script/f/xmlRpcTesting?t={$sessionId}&a={$action}\">" . $action . '</a>');
+	}
+	$html->endList();
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		// execute action...
+		call_user_func($a, $client, $sessionId);
+	}
+
+}
+
+function soapV1Testing() {
+	global $html;
+	global $script;
+
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/soap/';
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$html->para("Using API: <b>$api</b>\n");
+
+	$client = new SoapClient($api . '?wsdl');
+	if(!isset($sessionId)) {
+		$sessionId = $client->login($apiUser, $apiKey);
+	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
+
+	$actions = array(
+		'soapV1CatalogProductList'
+	);
+	$html->para("Available Tests:");
+	$html->startList();
+	foreach ($actions as $action) {
+		$html->listItem("<a href=\"$script/f/soapV1Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
+	}
+	$html->endList();
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		// execute action...
+		call_user_func($a, $client, $sessionId);
+	}
+}
+
+function soapV2Testing() {
+	global $html;
+	global $script;
+
+	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
+	$apiUser = 'magentoapi';
+	$apiKey = 'magentoapi';
+	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/v2_soap/';
+
+	$html->para("Using API: <b>$api</b>\n");
+
+	$client = new SoapClient($api . '?wsdl');
+	if(!isset($sessionId)) {
+		$sessionId = $client->login($apiUser, $apiKey);
+	}
+	$html->para("Using Session Id: <b>$sessionId</b>");
+	$actions = array(
+		'soapV2ShowFunctions',
+		'soapV2CatalogProductList'
+	);
+	$html->para("Available Tests:");
+	$html->startList();
+	foreach ($actions as $action) {
+		$html->listItem("<a href=\"{$script}/f/soapV2Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
+	}
+	$html->endList();
+	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
+	if (isset($a) && in_array($a, $actions)) {
+		call_user_func($a, $client, $sessionId);
+	}
+
+}
+
 function restApiTesting() {
 	error_log('restApiTesting called');
 	global $html, $script;
@@ -99,7 +195,8 @@ function restApiTesting() {
 
 			$oauthClient->setToken($_SESSION['token'], $_SESSION['secret']);
 			$actions = array(
-				'restCatalogProductList'
+				'restCatalogProductList',
+				'restGetByCategoryId'
 			);
 			$html->para("Available Tests:");
 			$html->startList();
@@ -115,102 +212,6 @@ function restApiTesting() {
 	} catch (OAuthException $e) {
 		$html->pre(print_r($e, true));
 	}
-}
-
-function soapV2Testing() {
-	global $html;
-	global $script;
-
-	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
-	$apiUser = 'magentoapi';
-	$apiKey = 'magentoapi';
-	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/v2_soap/';
-
-	$html->para("Using API: <b>$api</b>\n");
-
-	$client = new SoapClient($api . '?wsdl');
-	if(!isset($sessionId)) {
-		$sessionId = $client->login($apiUser, $apiKey);
-	}
-	$html->para("Using Session Id: <b>$sessionId</b>");
-	$actions = array(
-		'soapV2ShowFunctions',
-		'soapV2CatalogProductList'
-	);
-	$html->para("Available Tests:");
-	$html->startList();
-	foreach ($actions as $action) {
-		$html->listItem("<a href=\"{$script}/f/soapV2Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
-	}
-	$html->endList();
-	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
-	if (isset($a) && in_array($a, $actions)) {
-		call_user_func($a, $client, $sessionId);
-	}
-
-}
-
-function soapV1Testing() {
-	global $html;
-	global $script;
-
-	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
-	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/soap/';
-	$apiUser = 'magentoapi';
-	$apiKey = 'magentoapi';
-	$html->para("Using API: <b>$api</b>\n");
-
-	$client = new SoapClient($api . '?wsdl');
-	if(!isset($sessionId)) {
-		$sessionId = $client->login($apiUser, $apiKey);
-	}
-	$html->para("Using Session Id: <b>$sessionId</b>");
-
-	$actions = array(
-		'soapV1CatalogProductList'
-	);
-	$html->para("Available Tests:");
-	$html->startList();
-	foreach ($actions as $action) {
-		$html->listItem("<a href=\"$script/f/soapV1Testing?t={$sessionId}&a={$action}\">" . $action . '</a>');
-	}
-	$html->endList();
-	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
-	if (isset($a) && in_array($a, $actions)) {
-		// execute action...
-		call_user_func($a, $client, $sessionId);
-	}
-}
-
-function xmlRpcTesting() {
-	global $html;
-	global $script;
-	$sessionId = isset($_REQUEST['t']) ? $_REQUEST['t'] : null;
-	$api = 'http://' . $_SERVER['SERVER_NAME'] . '/magento/api/xmlrpc/';
-	$apiUser = 'magentoapi';
-	$apiKey = 'magentoapi';
-	$html->para("Using API: <b>$api</b>\n");
-
-	$client = new Zend_XmlRpc_Client($api);
-	if (!isset($sessionId)) {
-		$sessionId = $client->call('login', array($apiUser, $apiKey));
-	}
-	$html->para("Using Session Id: <b>$sessionId</b>");
-	$actions = array(
-		'xmlCatalogProductList'
-	);
-	$html->para("Available Tests:");
-	$html->startList();
-	foreach ($actions as $action) {
-		$html->listItem("<a href=\"$script/f/xmlRpcTesting?t={$sessionId}&a={$action}\">" . $action . '</a>');
-	}
-	$html->endList();
-	$a = isset($_REQUEST['a']) ? $_REQUEST['a'] : null;
-	if (isset($a) && in_array($a, $actions)) {
-		// execute action...
-		call_user_func($a, $client, $sessionId);
-	}
-
 }
 
 function xmlCatalogProductList($client, $sessionId) {
@@ -238,6 +239,15 @@ function restCatalogProductList($apiUrl, $oauthClient) {
 	$headers = array('Content-Type' => 'application/json');
 	$oauthClient->fetch(implode("?", array($resourceUrl, $query)), array(), OAUTH_HTTP_METHOD_GET, $headers);
 	$html->pre(json_decode($oauthClient->getLastResponse()));
+}
+
+function restGetByCategoryId($apiUrl, $client) {
+	global $html;
+	$resourceUrl = "$apiUrl/products?category_id=5";
+	//$query = http_build_query(array('filter' => array(array('attribute' => 'color', 'in' => '16'))));
+	$headers = array('Content-Type' => 'application/json');
+	$client->fetch($resourceUrl, array(), OAUTH_HTTP_METHOD_GET, $headers);
+	$html->pre(json_decode($client->getLastResponse()));
 }
 
 function soapV2ShowFunctions($client, $sessionId) {
